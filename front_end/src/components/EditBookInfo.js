@@ -35,7 +35,7 @@ const EditBookInfo = (props) => {
             Year: yearPublished,
             Author: author,
             Book: title,
-            Book_Selector: bookSelector,
+            BookSelector: bookSelector,
             Age: ageGroup,
             WordCount: wordCount,
             PrimaryGenre: primaryGenre,

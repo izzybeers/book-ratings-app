@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Heatmap from './BookSelectorHeatmap'
 import StarsDisplay from './StarsDisplay'
 import { BsCheckSquareFill, BsXCircleFill, BsFillHeartFill } from "react-icons/bs"
 import BarChart from './BarChart'
@@ -52,6 +51,10 @@ const HeadToHead = (props) => {
 
   })
 
+  //setting the criteria to 4 as the minimum count means 2 distinct books (2 ratings per 2 books) in order to be considered for favorite author
+  const avg_by_author = props.sort_table(props.groupBy(ratings_data_filtered, 'Author', 4), 'avgRating', false)
+  console.log('author averages')
+  console.log(avg_by_author)
   const avg_by_member = props.groupBy(ratings_data_filtered, 'Member', 1)
   const avg_by_selector = props.groupBy(ratings_data_filtered.filter((row) => member_names_for_analysis.includes(row.BookSelector)), 'BookSelector', 1)
   const avg_by_member_for_selector1 = props.groupBy(ratings_data_filtered.filter((row) => row.BookSelector == member_names_for_analysis[0]), 'Member', 1).map((row) => ({
@@ -103,32 +106,46 @@ const HeadToHead = (props) => {
               </div>)
           })}
         </div>
-        <p className='text-[40px] font-bold mt-10'>Who picks the best books?</p>
-        <div className='flex items-end justify-center h-80 px-4 w-[400px] gap-8'>
-          {props.uniqueValues(selectorWideDf, 'BookSelector').map((selector) => {
-            const rows = selectorWideDf.filter((row) => row.BookSelector == selector)
-            return (
-              <div className='flex-col h-full'>
-                <div className='flex h-full items-end gap-2'>
-                  {rows.map((rating) => {
-                    console.log(rating)
-                    return (
-                      <div className='flex flex-col h-full justify-end items-center'>
-                        <p>{rating.avgRating.toFixed(1)}</p>
-                        <BarChart value={rating.avgRating} color={raterColorMap[rating.value]} />
-                        <p>{rating.value}</p>
-                      </div>
-                    )
-                  })}
-                </div>
-                <p>{selector}'s Picks</p>
-              </div>
+        <div className='flex grid grid-cols-3 w-full items-start'>
+          <div className = 'flex justify-center items-center'>
+            <p>Favorite author: {avg_by_author[0].value}</p>
+          </div>
+          <div className = 'flex flex-col'>
+            <p className='text-[40px] font-bold mt-10'>Who picks the best books?</p>
+            <div className='flex items-center justify-center h-80 px-4 w-full gap-8'>
+              {props.uniqueValues(selectorWideDf, 'BookSelector').map((selector) => {
+                const rows = selectorWideDf.filter((row) => row.BookSelector == selector)
+                const groupAvg = rows.reduce((sum, row) => sum + row.avgRating, 0) / 2
+                return (
+                  <div className='flex flex-col h-full items-center mx-6'>
+                    <div className='flex relative h-full gap-4 justify-center'>
 
-            )
-          })}
+                      {rows.map((rating) => {
+                        return (
+                          <div className='flex flex-col h-full items-center'>
+                            <div className='flex flex-col h-full justify-end'>
+                              <p className='relative z-20 font-bold'>{rating.avgRating.toFixed(1)}</p>
+                              <BarChart value={rating.avgRating} color={raterColorMap[rating.value]} />
+                              <div
+                                className="absolute left-0 right-0 border-t-2 border-dashed border-gray-500 z-10 pointer-events-none"
+                                style={{ bottom: `${groupAvg * 10}%` }}
+                              />
+                            </div>
+                            <p className='font-bold'>{rating.value}</p>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    <p className='font-bold text-lg'>{selector}'s Picks</p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+          <div>
+            <p>Favorite genres</p>
+          </div>
         </div>
-        {/* <Heatmap data= {avg_by_member_for_selector1.concat(avg_by_member_for_selector2)} uniqueValues = {props.uniqueValues}/> */}
-
 
       </div>
       <div id='h2h-right-side' className='my-10 mr-10 border border-2 border-gray-300'>
