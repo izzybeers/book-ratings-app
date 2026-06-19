@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addBook } from '../store/bookSlice.js';
 import { supabase } from '../utils/SupabaseClient.js'
+import {genreOptions} from '../store/bookSlice.js'
 
 const EditBookInfo = (props) => {
     const ageOptions = ['Adult', 'YA', 'Any Age']
-    const genreOptions = ['Action/Adventure', 'Drama', 'Fantasy', 'Historical', 'Horror', 'Literary Fiction', 'Mystery/Crime', 'Non-Fiction', 'Post-Apocalyptic', 'Romance', 'Science Fiction', 'Southern Gothic', 'Thriller/Suspense', 'Western']
     const rawMemberData = useSelector((state) => state.members).data
     const memberData = props.sort_table ? props.sort_table(rawMemberData, 'MemberName', true) : []
     const memberNames = memberData.map((row) => row.MemberName)
