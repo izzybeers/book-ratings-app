@@ -8,8 +8,8 @@ const DataTable = () => {
     const [yearAscendingSort, setYearAscendingSort] = useState(false)
     const [memberAscendingSort, setMemberAscendingSort] = useState(false)
     const [ratingAscendingSort, setRatingAscendingSort] = useState(true)
-    const [startdateAscendingSort, setStartdateAscendingSort] = useState(false)
-    const [finishdateAscendingSort, setFinishdateAscendingSort] = useState(false)
+    const [wordcountAscendingSort, setWordcountAscendingSort] = useState(false)
+    const [genreAscendingSort, setGenreAscendingSort] = useState(false)
     const [sortedJoinedTable, setSortedJoinedTable] = useState([])
     const [filterString, setFilterString] = useState('')
 
@@ -17,10 +17,14 @@ const DataTable = () => {
     const ratingsData = useSelector((state) => state.ratings).data
     const membersData = useSelector((state) => state.members).data
     
-    const joined_table = useSelector(selectJoinedTable); 
+    const joined_table = useSelector(selectJoinedTable);
+
+    const joined_table_with_genres = joined_table.map((row) => {return {...row, Genres: `${row.PrimaryGenre}${row.SecondaryGenres == '' ? '' : ', '}${row.SecondaryGenres?.replace(',', ', ')}`}})
     useEffect(() => {
-        setSortedJoinedTable(joined_table)
+        setSortedJoinedTable(joined_table_with_genres)
     }, [joined_table])
+
+    console.log(joined_table_with_genres)
     
     const sort_table = (field, ascending) => {
         const sorted = [...sortedJoinedTable].sort((a,b) => {
@@ -67,13 +71,13 @@ const DataTable = () => {
                         sort_table('Rating', ratingAscendingSort)
                     }}>Rating</th>
                     <th onClick = {() => {
-                        setStartdateAscendingSort(!startdateAscendingSort)
-                        sort_table('StartDate', startdateAscendingSort)
-                    }}>Start Date</th>
+                        setWordcountAscendingSort(!wordcountAscendingSort)
+                        sort_table('StartDate', wordcountAscendingSort)
+                    }}>Word Count</th>
                     <th onClick = {() => {
-                        setFinishdateAscendingSort(!finishdateAscendingSort)
-                        sort_table('FinishDate', finishdateAscendingSort)
-                    }}>Finish Date</th>
+                        setGenreAscendingSort(!genreAscendingSort)
+                        sort_table('Genres', genreAscendingSort)
+                    }}>Genres</th>
                 </tr>
             </thead>
             <tbody>
@@ -89,8 +93,8 @@ const DataTable = () => {
                             <td>{row.Book}</td>
                             <td>{row.Member}</td>
                             <td>{row.Rating}</td>
-                            <td>{row.StartDate}</td>
-                            <td>{row.FinishDate}</td>
+                            <td>{row.WordCount?.toLocaleString()}</td>
+                            <td>{row.Genres}</td>
                         </tr>
                     )
                 })}
