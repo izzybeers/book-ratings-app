@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import StarsDisplay from './StarsDisplay'
 import { BsCheckSquareFill, BsXCircleFill, BsFillHeartFill } from "react-icons/bs"
 import BarChart from './BarChart'
+import { mean, standardDeviation, median}  from 'simple-statistics'
+import ShowSharedBooksCount from './ShowSharedBooksCount.js'
+import MemberAverageVisualBar from './MemberAverageVisualBar.js'
 
 const HeadToHead = (props) => {
 
@@ -17,10 +20,25 @@ const HeadToHead = (props) => {
     }
   }, [selectedH2HView])
 
-  const shared_books_both_members = props.groupBy(props.data, 'bookid', 2).map((row) => row.value)
-  const member_ids_for_analysis = props.uniqueValues(props.data, 'memberid')
-  const member_names_for_analysis = props.uniqueValues(props.data, 'Member')
-  const ratings_data_filtered = props.data.filter((row) => shared_books_both_members.includes(String(row.bookid)))
+
+  const filteredData = props.data.filter((row) => [props.selectedUser, props.headToHeadUser].includes(row.Member))
+
+  const shared_books_both_members = props.groupBy(filteredData, 'bookid', 2).map((row) => row.value)
+  const member_ids_for_analysis = props.uniqueValues(filteredData, 'memberid')
+  const member_names_for_analysis = props.uniqueValues(filteredData, 'Member')
+  const ratings_data_filtered = props.data.filter((row) => shared_books_both_members.includes(String(row.bookid)) & member_ids_for_analysis.includes(row.memberid))
+
+  console.log(`H2H view: ${selectedH2HView}`)
+  console.log('props data:')
+  console.log(props.data)
+  console.log('shared books both members:')
+  console.log(shared_books_both_members)
+  console.log('member_ids_for_analysis:')
+  console.log(member_ids_for_analysis)
+  console.log('member names for analysis:')
+  console.log(member_names_for_analysis)
+  console.log('ratings data filtered:')
+  console.log(ratings_data_filtered)
 
 
   //create a wide dataframe:
@@ -41,7 +59,7 @@ const HeadToHead = (props) => {
         BookSelector: book2.BookSelector,
         Year: book2.Year,
         PrimaryGenre: book2.PrimaryGenre,
-        SecondaryGenre: book2.SecondaryGenre,
+        SecondaryGenres: book2.SecondaryGenres,
         WordCount: book2.WordCount,
         RatingDifference: Math.abs(Number(row1.Rating) - Number(book2.Rating)),
         RatingAverage: 0.5 * (Number(row1.Rating) + Number(book2.Rating)),
@@ -55,6 +73,26 @@ const HeadToHead = (props) => {
   const avg_by_author = props.sort_table(props.groupBy(ratings_data_filtered, 'Author', 4), 'avgRating', false)
   console.log('author averages')
   console.log(avg_by_author)
+
+  // const avg_by_genre = props.sort_table(genreOptions.map((genre) => {
+  //   const booksInGenre = ratings_data_filtered.filter((row) => row.PrimaryGenre == genre || row.SecondaryGenres?.includes(genre))
+  //   const numBooks = [...new Set(booksInGenre.map(book => book.bookid))].length
+  //   if (numBooks >= 3)
+  //   {
+  //     const avgRating = mean(booksInGenre.map((book) => book.Rating))
+      
+  //       return {
+  //         genre: genre,
+  //         avgRating: avgRating,
+  //         numBooks: numBooks
+  //       }
+  //     }
+  // }).filter(Boolean), 'avgRating', false)
+
+  const avg_by_genre = props.avgByGenre(ratings_data_filtered, 3, true)
+
+  console.log('avg by genre')
+  console.log(avg_by_genre)
   const avg_by_member = props.groupBy(ratings_data_filtered, 'Member', 1)
   const avg_by_selector = props.groupBy(ratings_data_filtered.filter((row) => member_names_for_analysis.includes(row.BookSelector)), 'BookSelector', 1)
   const avg_by_member_for_selector1 = props.groupBy(ratings_data_filtered.filter((row) => row.BookSelector == member_names_for_analysis[0]), 'Member', 1).map((row) => ({
@@ -72,6 +110,7 @@ const HeadToHead = (props) => {
     selectedH2HView == 'agree' ? props.sort_table(props.sort_table(combinedRatingsTableWide, 'RatingAverage', false), 'RatingDifference', true) :
       props.sort_table(combinedRatingsTableWide, 'RatingDifference', false)
 
+
   let ratingCols = Object.keys(h2hViewSorted[0]).map((key) => {
     const match = key.match(/[A-Z].+Rating/)
     return match ? key : null
@@ -86,29 +125,25 @@ const HeadToHead = (props) => {
     [props.uniqueValues(selectorWideDf, 'value')[1]]: 'bg-green-400'
   }
   return (
+    props.data.length == 0 ?
+      (<div className = 'items-center text-center text-lg'><p>Loading...</p></div>)
+      :
+    (
     <div className='grid grid-cols-[5fr_3fr]'>
       <div id='h2h-left-side' className='my-10 ml-10 border border-2'>
-        <p className='text-[50px] font-bold my-10'><span className='text-[75px] text-red-500 text-4xl px-2'>{shared_books_both_members.length}</span> Books Rated Together </p>
+        <ShowSharedBooksCount sharedBookData = {ratings_data_filtered} uniqueValues = {props.uniqueValues}/>
+        {/* <p className='text-[50px] font-bold my-10'><span className='text-[75px] text-red-500 text-4xl px-2'>{shared_books_both_members.length}</span> Books Rated Together </p> */}
         <div className='flex flex-col px-20'>
           {avg_by_member.map((row) => {
             const fillPercentage = row.avgRating * 10
             return (
-              <div className={`border-2 rounded-xl border-gray-200 p-5`}
-                style={{
-                  backgroundImage: `linear-gradient(to right, #fecaca ${fillPercentage}%, #f3f4f6 ${fillPercentage}%)`
-                }}>
-                <p className='m-2 text-2xl font-bold'>{row.value}:<br></br>
-                  <span className='text-red-500 text-3xl mx-2'>
-                    {row.avgRating.toFixed(2)}
-                  </span>
-                  Average Rating on Shared Books
-                </p>
-              </div>)
+              <MemberAverageVisualBar row = {row} namePrefix = {''} uniqueValues = {props.uniqueValues}/>)
           })}
         </div>
-        <div className='flex grid grid-cols-3 w-full items-start'>
-          <div className = 'flex justify-center items-center'>
-            <p>Favorite author: {avg_by_author[0].value}</p>
+        <div className='flex grid grid-cols-3 w-full items-center'>
+          <div className = 'flex flex-col border-[10px] border-gray-500 bg-gray-100 px-2 py-12 mt-10 mx-20 justify-center items-center'>
+            <p className = 'font-bold text-xl'>Our Favorite Author <br></br> <span className = 'font-bold text-lg'>{avg_by_author[0].value}</span></p>
+            <p className = 'font-bold'><span className = 'text-red-500 text-md font-bold'>{avg_by_author[0].count/2} </span> Books Rated</p>
           </div>
           <div className = 'flex flex-col'>
             <p className='text-[40px] font-bold mt-10'>Who picks the best books?</p>
@@ -142,8 +177,9 @@ const HeadToHead = (props) => {
               })}
             </div>
           </div>
-          <div>
-            <p>Favorite genres</p>
+          <div className = 'flex flex-col border-[10px] border-gray-500 bg-gray-100 px-2 py-12 mt-10 mx-auto justify-center items-center'>
+            <p className = 'font-bold text-xl'>Our Favorite Genre<br></br><span className='font-bold text-lg'>{avg_by_genre[0].genre}</span> </p>
+            <p className = 'font-bold'><span className = 'text-red-500 text-md font-bold'>{avg_by_genre[0].numBooks}</span> Books Rated</p>
           </div>
         </div>
 
@@ -196,7 +232,7 @@ const HeadToHead = (props) => {
             <p> </p>
             <p className='font-bold text-2xl'>{ratingCols[1].replace('Rating', '')}</p>
           </div>
-          <div ref={scrollContainerRef} className='overflow-y-scroll max-h-[600px] mt-1  [&::-webkit-scrollbar]:w-3' style={{ scrollbarWidth: 'auto', scrollbarColor: 'gray' }}>
+          <div ref={scrollContainerRef} className='overflow-y-scroll max-h-[700px] mt-1  [&::-webkit-scrollbar]:w-3' style={{ scrollbarWidth: 'auto', scrollbarColor: 'gray' }}>
             {h2hViewSorted.map((row) => {
               return (<div className='grid grid-cols-3 py-3 m-4 justify-items-center border border-2 bg-gray-100 border-gray-200'>
                 <div>
@@ -215,7 +251,7 @@ const HeadToHead = (props) => {
         </div>
       </div>
     </div >
-  )
+  ))
 }
 
 export default HeadToHead

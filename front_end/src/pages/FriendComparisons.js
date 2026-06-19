@@ -1,11 +1,13 @@
-import React, {useState} from 'react'
+import React, {useState, useMemo, useEffect} from 'react'
 import Nav from '../components/Nav'
 import AuthorAnalysis from '../components/AuthorAnalysis'
 import TimelineAnalysis from '../components/TimelineAnalysis'
+import PersonalRatingPullProfiles from '../components/PersonalRatingPullProfiles.js'
 import HeadToHead from '../components/HeadToHead'
 import GroupAnalysis from '../components/GroupAnalysis'
 import {useSelector} from 'react-redux'
 import { selectJoinedTable } from '../store/selectors';
+import {genreOptions} from '../store/bookSlice.js'
 import { mean, standardDeviation, median}  from 'simple-statistics'
 
 const FriendComparisons = () => {
@@ -23,8 +25,19 @@ const FriendComparisons = () => {
 
   const numMembers = uniqueValues(fullData, 'memberid').length
   const selectedMemberName = uniqueValues(selectedUserData, 'Member')[0]
-  const otherMemberNames = uniqueValues(fullData.filter((row) => row.memberid != selectedUser), 'Member')
+  const otherMemberNames = useMemo(() => {return uniqueValues(fullData.filter((row) => row.memberid != selectedUser), 'Member')}, [selectedUser, fullData])
+
   const [headToHead, setHeadToHead] = useState(otherMemberNames[0])
+
+  console.log(numMembers)
+
+  useEffect(() => {
+    if (headToHead == selectedMemberName)
+    {
+      setHeadToHead(otherMemberNames[0])
+    }
+  }, [selectedUser, selectedMemberName, otherMemberNames, headToHead])
+
 
 
   const sort_table = (data, field, ascending) => {
@@ -73,11 +86,55 @@ const FriendComparisons = () => {
     }).filter(Boolean)
     return(sort_table(summary_stats, 'avgRating', false))
   }
+
+   const avgByGenre = (data, minThreshold, halfForSecondary) => {
+    let numBooks = 0
+    let numBooksWithHalfs = 0
+    let primaryBooksInGenre = null
+    let secondaryBooksInGenre = null
+    let booksInGenre = null
+    let avgRating = 0
+
+      return(sort_table(genreOptions.map((genre) => {
+
+          primaryBooksInGenre = data.filter((row) => row.PrimaryGenre == genre)
+          secondaryBooksInGenre = data.filter((row) =>row.SecondaryGenres?.includes(genre) && (row.SecondaryGenres != ''))
+          numBooksWithHalfs = [...new Set(primaryBooksInGenre.map(book => book.bookid))].length + 0.5*[...new Set(secondaryBooksInGenre.map(book => book.bookid))].length
+          numBooks = [...new Set(primaryBooksInGenre.map(book => book.bookid))].length + [...new Set(secondaryBooksInGenre.map(book => book.bookid))].length
+        
+          if (numBooks >= minThreshold)
+          {
+            const primaryTotalRating = primaryBooksInGenre?.reduce((runningTotal, row) => {
+                return runningTotal += row.Rating
+              }, 0)
+            if (halfForSecondary)
+            {
+              const secondaryTotalRating = 0.5*secondaryBooksInGenre?.reduce((runningTotal, row) =>
+               { return runningTotal+= row.Rating }, 0)
+              avgRating = (primaryTotalRating + secondaryTotalRating)/numBooksWithHalfs
+            } else {
+              const secondaryTotalRating = secondaryBooksInGenre?.reduce((runningTotal, row) =>
+               { return runningTotal+= row.Rating }, 0)
+               avgRating = (primaryTotalRating + secondaryTotalRating)/numBooks
+            } 
+            
+              return {
+                genre: genre,
+                avgRating: avgRating,
+                numBooksWithHalfs: numBooksWithHalfs,
+                numBooks: numBooks
+              }
+            }
+        }).filter(Boolean), 'avgRating', false))
+    }
   const [selectedAnalysisType, setSelectedAnalysisType] = useState('personal')
 
   const labelsClass = 'cursor-pointer p-5 w-3/4 text-center justify-center mx-auto font-bold text-xl border rounded-full border-gray-800 bg-red-100'
   return (
-    <div>
+    fullData.length == 0 ?
+      (<div className = 'items-center text-center text-lg'><p>Loading...</p></div>)
+      :
+    (<div>
         <Nav/>
         <div className = {`grid ${numMembers > 2 ? 'grid-cols-3' : 'grid-cols-2'} mt-10`}>
           <label className ={`${labelsClass} ${selectedAnalysisType == 'personal' && 'border-[3px]'}`}>
@@ -119,6 +176,7 @@ const FriendComparisons = () => {
         (
           <div>
             <AuthorAnalysis data = {selectedUserData} groupBy = {groupBy} sort_table = {sort_table} uniqueValues = {uniqueValues}/>
+            <PersonalRatingPullProfiles data = {selectedUserData} avgByGenre = {avgByGenre} sort_table = {sort_table} groupBy = {groupBy}/>
             <TimelineAnalysis data = {selectedUserData} groupBy = {groupBy} sort_table = {sort_table} uniqueValues = {uniqueValues}/>
           </div>
         )
@@ -130,10 +188,10 @@ const FriendComparisons = () => {
             <option value = {name}>{name}</option>
           ))}
         </select>
-        <HeadToHead data = {fullData.filter((row) => [selectedMemberName, headToHead].includes(row.Member))} uniqueValues = {uniqueValues} groupBy = {groupBy} sort_table = {sort_table}/>
+        {headToHead != selectedMemberName && (<HeadToHead key = {headToHead} selectedUser = {selectedMemberName} headToHeadUser = {headToHead} data = {fullData} uniqueValues = {uniqueValues} groupBy = {groupBy} sort_table = {sort_table} avgByGenre = {avgByGenre}/>)}
         </div>)}
-        {selectedAnalysisType == 'group' && <GroupAnalysis/>} 
-    </div>
+        {selectedAnalysisType == 'group' && <GroupAnalysis data = {fullData} uniqueValues = {uniqueValues} groupBy = {groupBy} sort_table = {sort_table} avgByGenre= {avgByGenre}/>} 
+    </div>)
   )
 }
 

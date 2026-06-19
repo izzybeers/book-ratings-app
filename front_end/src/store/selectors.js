@@ -19,10 +19,11 @@ export const selectJoinedTable = createSelector(
         Author: book?.Author,
         Year: book?.Year,
         BookSelector: book?.BookSelector,
+        Age: book?.Age,
         Member: member?.MemberName,
         Thumbnail: book?.thumbnail_url,
         PrimaryGenre: book?.PrimaryGenre,
-        SecondaryGenre: book?.SecondaryGenre,
+        SecondaryGenres: book?.SecondaryGenres,
         WordCount: book?.WordCount
       };
     });

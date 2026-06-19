@@ -16,7 +16,7 @@ const AuthorAnalysis = (props) => {
     <div className = 'my-5 text-center'>
         <div className = 'grid grid-cols-2'>
             <h2 className = 'text-center px-5 pt-10 font-bold border-gray-600 border[2] text-3xl'>My Total Books Rated: {data.length}</h2>
-            <h2 className = 'text-center px-5 pt-10 font-bold border-gray-600 border[2] text-3xl'>My Average Rating: {mean(data.map((item) => item.Rating)).toFixed(1)}/10</h2>
+            <h2 className = 'text-center px-5 pt-10 font-bold border-gray-600 border[2] text-3xl'>My Average Rating: {data.length > 0 ? mean(data.map((item) => item.Rating)).toFixed(1) : ''}/10</h2>
         </div>
         <div className = 'border border-gray-600  bg-gray-100  my-16 py-5'>
             <p className = 'font-extrabold text-2xl text-center'>My Ratings By Author</p>
