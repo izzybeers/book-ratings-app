@@ -65,30 +65,30 @@ const GroupAnalysis = (props) => {
     topReadGenres = props.sort_table(avg_by_genre, 'avgRating', false).slice(0, 5)
   }
 
-  const unselectedClassName = 'border border-gray-500 bg-blue-100 py-3 mx-[200px] cursor-pointer rounded-xl'
-  const selectedClassName = 'border border-gray-500 border-[5px] bg-blue-200 py-3 mx-[200px] cursor-pointer rounded-xl'
-  const awardTitleClass = 'text-xl font-bold mt-3 mb-2'
+  const unselectedClassName = 'border border-gray-500 bg-blue-100 py-10 px-4 cursor-pointer rounded-xl w-full'
+  const selectedClassName = 'border border-gray-500 border-[5px] bg-blue-200 py-10 px-4 cursor-pointer rounded-xl w-full'
+  const awardTitleClass = ' text-lg lg:text-xl font-bold mt-1 mb-2'
   return (
     <div>
-      <div className='grid grid-cols-3 mt-10'>
+      <div className='flex flex-row gap-12 mx-10 my-10'>
         <div onClick={() => setViewChoice('Books Rated By Every Member')} className={viewChoice == 'Books Rated By Every Member' ? selectedClassName : unselectedClassName}>
-          <p className='text-[50px] font-bold text-center'>{booksRatedByAllMembers.length}</p>
+          <p className='text-4xl md:text-[50px] font-bold text-center'>{booksRatedByAllMembers.length}</p>
           <p className='text-center text-sm'>Books Rated By Every Member </p>
         </div>
         <div onClick={() => setViewChoice('Books Rated By More Than One Member')} className={viewChoice == 'Books Rated By More Than One Member' ? selectedClassName : unselectedClassName}>
-          <p className='text-[50px] font-bold text-center' >{booksRatedByMoreThanOneMember.length}</p>
+          <p className='text-4xl md:text-[50px] font-bold text-center' >{booksRatedByMoreThanOneMember.length}</p>
           <p className='text-center text-sm'>Books Rated By More Than One Member </p>
         </div>
         <div onClick={() => setViewChoice('Books Rated By Anyone')} className={viewChoice == 'Books Rated By Anyone' ? selectedClassName : unselectedClassName}>
-          <p className='text-[50px] font-bold text-center'>{props.uniqueValues(props.data, 'bookid').length}</p>
+          <p className='text-4xl md:text-[50px] font-bold text-center'>{props.uniqueValues(props.data, 'bookid').length}</p>
           <p className='text-center text-sm'>Books Rated By Anyone </p>
         </div>
       </div>
 
-      <div className='grid grid-cols-4 text-center items-center justify-center bg-gray-400 h-[500px] mx-10 mt-20'>
+      <div className='grid md:grid-cols-2 2xl:grid-cols-4 text-center items-center justify-center bg-gray-400 py-10 gap-8 mx-10'>
         {topRatedBook?.value &&
-          (<div className='flex flex-col items-center text-center justify-center bg-gray-200  mx-auto  h-[400px] w-[400px] border-2 border-gray-500 rounded-xl'>
-            <img src={ratingsTable.filter((row) => row.bookid == topRatedBook.value)[0].Thumbnail} />
+          (<div className='flex flex-col items-center text-center justify-center bg-gray-200  mx-auto  h-[400px] w-full max-w-[400px] border-2 border-gray-500 rounded-xl'>
+            <img className = 'h-48 object-contain mb-4 mt-2 rounded' src={ratingsTable.filter((row) => row.bookid == topRatedBook.value)[0].Thumbnail} />
             <p className={awardTitleClass}>Group's Favorite Book</p>
             <p className='text-sm'>{ratingsTable.filter((row) => row.bookid == topRatedBook.value)[0].Author} - {ratingsTable.filter((row) => row.bookid == topRatedBook.value)[0].Book}</p>
             <p className='text-sm'>Average: {topRatedBook.avgRating.toFixed(2)}</p>
@@ -98,8 +98,8 @@ const GroupAnalysis = (props) => {
           </div>)
         }
         {bottomRatedBook?.value &&
-          (<div className='flex flex-col items-center text-center justify-center bg-gray-200  mx-auto  h-[400px] w-[400px]  border-2 border-gray-500 rounded-xl'>
-            <img src={ratingsTable.filter((row) => row.bookid == bottomRatedBook.value)[0].Thumbnail} />
+          (<div className='flex flex-col items-center text-center justify-center bg-gray-200  mx-auto  h-[400px] w-full max-w-[400px]  border-2 border-gray-500 rounded-xl'>
+            <img className = 'h-48 w-full object-contain mb-4 mt-2 rounded' src={ratingsTable.filter((row) => row.bookid == bottomRatedBook.value)[0].Thumbnail} />
             <p className={awardTitleClass}>Group's Least Favorite Book</p>
             <p className='text-sm'>{ratingsTable.filter((row) => row.bookid == bottomRatedBook.value)[0].Author} - {ratingsTable.filter((row) => row.bookid == bottomRatedBook.value)[0].Book}</p>
             <p className='text-sm'> Average: {bottomRatedBook.avgRating.toFixed(2)}</p>
@@ -108,8 +108,8 @@ const GroupAnalysis = (props) => {
                 membersRatedBottomRatedBook.length == 2 ? `${membersRatedBottomRatedBook[0]} and ${membersRatedBottomRatedBook[1]} Rated This` : `${membersRatedBottomRatedBook.length} Members Rated This`}</em>}
           </div>)}
         {topConsistencyBook?.value &&
-          (<div className='flex flex-col items-center text-center justify-center bg-gray-200  mx-auto  h-[400px] w-[400px] border-2 border-gray-500 rounded-xl'>
-            <img src={ratingsTable.filter((row) => row.bookid == topConsistencyBook.value)[0].Thumbnail} />
+          (<div className='flex flex-col items-center text-center justify-center bg-gray-200  mx-auto  h-[400px] w-full max-w-[400px] border-2 border-gray-500 rounded-xl'>
+            <img className = 'h-48 w-full object-contain mb-4 mt-2 rounded' src={ratingsTable.filter((row) => row.bookid == topConsistencyBook.value)[0].Thumbnail} />
             <p className={awardTitleClass}>Group's Most Consistent Book</p>
             <p className='text-sm'>{ratingsTable.filter((row) => row.bookid == topConsistencyBook.value)[0].Author} - {ratingsTable.filter((row) => row.bookid == topConsistencyBook.value)[0].Book}</p>
             <p className='text-sm'>Standard Deviation: {topConsistencyBook.sdRating.toFixed(2)}</p>
@@ -120,8 +120,8 @@ const GroupAnalysis = (props) => {
         }
         {leastConsistentBook?.value &&
           (
-            <div className='flex flex-col items-center text-center justify-center bg-gray-200 mx-auto  h-[400px] w-[400px]  border-2 border-gray-500 rounded-xl'>
-              <img src={ratingsTable.filter((row) => row.bookid == leastConsistentBook.value)[0].Thumbnail} />
+            <div className='flex flex-col items-center text-center justify-center bg-gray-200 mx-auto h-[400px] w-full max-w-[400px] border-2 border-gray-500 rounded-xl'>
+              <img className = 'h-48 w-full object-contain mb-4 mt-2 rounded' src={ratingsTable.filter((row) => row.bookid == leastConsistentBook.value)[0].Thumbnail} />
               {leastConsistentBook?.value &&
                 <p className={awardTitleClass}>Group's Least Consistent Book</p>}
               <p className='text-sm'>{ratingsTable.filter((row) => row.bookid == leastConsistentBook.value)[0].Author} - {ratingsTable.filter((row) => row.bookid == leastConsistentBook.value)[0].Book}</p>
@@ -131,13 +131,10 @@ const GroupAnalysis = (props) => {
                   membersRatedLeastConsistentBook.length == 2 ? `${membersRatedLeastConsistentBook[0]} and ${membersRatedLeastConsistentBook[1]} Rated This` : `${membersRatedLeastConsistentBook.length} Members Rated This`}</em>}
             </div>)
         }
-      </div>
-
-      <div className='grid grid-cols-4 text-center items-center justify-center bg-gray-400 h-[500px] mx-10'>
         {
           longestBook &&
-          (<div className='flex flex-col items-center text-center justify-center bg-gray-200  mx-auto  h-[400px] w-[400px] border-2 border-gray-500 rounded-xl'>
-            <img src={longestBook.Thumbnail} />
+          (<div className='flex flex-col items-center text-center justify-center bg-gray-200  mx-auto  h-[400px] w-full max-w-[400px] border-2 border-gray-500 rounded-xl'>
+            <img className = 'h-48 w-full object-contain mb-4 mt-2 rounded' src={longestBook.Thumbnail} />
             <p className={awardTitleClass}>Longest Book</p>
             <p className='text-sm'>{longestBook.Author} - {longestBook.Book}</p>
             <p className='text-sm'>~{longestBook.WordCount.toLocaleString()} Words</p>
@@ -148,8 +145,8 @@ const GroupAnalysis = (props) => {
         }
         {
           shortestBook &&
-          (<div className='flex flex-col items-center text-center justify-center bg-gray-200  mx-auto  h-[400px] w-[400px] border-2 border-gray-500 rounded-xl'>
-            <img src={shortestBook?.Thumbnail} />
+          (<div className='flex flex-col items-center text-center justify-center bg-gray-200  mx-auto  h-[400px] w-full max-w-[400px] border-2 border-gray-500 rounded-xl'>
+            <img className = 'h-48 w-full object-contain mb-4 mt-2 rounded' src={shortestBook?.Thumbnail} />
             <p className={awardTitleClass}>Shortest Book</p>
             <p className='text-sm'>{shortestBook?.Author} - {shortestBook?.Book}</p>
             <p className='text-sm'>~{shortestBook?.WordCount.toLocaleString()} Words</p>
@@ -160,8 +157,8 @@ const GroupAnalysis = (props) => {
         }
 
         {oldestBook &&
-          (<div className='flex flex-col items-center text-center justify-center bg-gray-200 mx-auto  h-[400px] w-[400px] border-2 border-gray-500 rounded-xl'>
-            <img src={oldestBook.Thumbnail} />
+          (<div className='flex flex-col items-center text-center justify-center bg-gray-200 mx-auto  h-[400px] w-full max-w-[400px] border-2 border-gray-500 rounded-xl'>
+            <img className = 'h-48 w-full object-contain mb-4 mt-2 rounded' src={oldestBook.Thumbnail} />
             <p className={awardTitleClass}>Oldest Book</p>
             <p className='text-sm'>{oldestBook.Author} - {oldestBook.Book}</p>
             <p className='text-sm'>{oldestBook.Year}</p>
@@ -171,8 +168,8 @@ const GroupAnalysis = (props) => {
           </div>)
         }
         {newestBook &&
-          (<div className='flex flex-col items-center text-center justify-center bg-gray-200 mx-auto  h-[400px] w-[400px] border-2 border-gray-500 rounded-xl'>
-            <img src={newestBook.Thumbnail} />
+          (<div className='flex flex-col items-center text-center justify-center bg-gray-200 mx-auto  h-[400px] w-full max-w-[400px] border-2 border-gray-500 rounded-xl'>
+            <img className = 'h-48 w-full object-contain mb-4 mt-2 rounded' src={newestBook.Thumbnail} />
             <p className={awardTitleClass}>Newest Book</p>
             <p className='text-sm'>{newestBook.Author} - {newestBook.Book}</p>
             <p className='text-sm'> {newestBook.Year}</p>
@@ -184,39 +181,39 @@ const GroupAnalysis = (props) => {
       </div>
 
     {topRatedMember?.value &&
-      (<div className='grid grid-cols-5 bg-blue-200 h-[300px] items-center justify-center text-center mx-10 mt-10'>
-          <div className='flex flex-col text-center items-center justify-center bg-gray-200 mx-auto w-[300px] h-[200px] border-2 border-gray-500 rounded-xl'>
+      (<div className='flex flex-wrap gap-8 bg-blue-200 py-10 items-center justify-center text-center mx-10 mt-10'>
+          <div className='flex flex-col text-center items-center justify-center bg-gray-200 mx-auto w-full max-w-[300px] h-[200px] border-2 border-gray-500 rounded-xl'>
             <p className={awardTitleClass}>Highest Rater </p>
             <p className='text-sm'>{topRatedMember.value}</p>
             <p className='text-sm'>Average: {topRatedMember.avgRating.toFixed(2)}</p>
             {viewChoice != 'Books Rated By Every Member' &&
               (<em className='text-sm'>{ratingsTable.filter((row) => row.Member == topRatedMember.value).length} Books</em>)}
           </div>
-          <div className='flex flex-col text-center items-center justify-center bg-gray-200 mx-auto w-[300px] h-[200px]  border-2 border-gray-500 rounded-xl'>
+          <div className='flex flex-col text-center items-center justify-center bg-gray-200 mx-auto w-full max-w-[300px] h-[200px]  border-2 border-gray-500 rounded-xl'>
             <p className={awardTitleClass}>Hardest To Please</p>
             <p className='text-sm'>{bottomRatedMember.value}</p>
             <p className='text-sm'>Average: {bottomRatedMember.avgRating.toFixed(2)}</p>
             {viewChoice != 'Books Rated By Every Member' &&
               (<em className='text-sm'>{ratingsTable.filter((row) => row.Member == bottomRatedMember.value).length} Books</em>)}
           </div>
-          <div className='flex flex-col text-center items-center justify-center bg-gray-200 mx-auto w-[300px] h-[200px]  border-2 border-gray-500 rounded-xl'>
+          <div className='flex flex-col text-center items-center justify-center bg-gray-200 mx-auto w-full max-w-[300px] h-[200px]  border-2 border-gray-500 rounded-xl'>
             <p className={awardTitleClass}>Most Consistent Rater</p>
             <p className='text-sm'>{consistentRater.value}</p>
             <p className='text-sm'>Standard Deviation: {consistentRater.sdRating.toFixed(2)}</p>
           </div>
-          <div className='flex flex-col text-center items-center justify-center bg-gray-200 mx-auto w-[300px] h-[200px]  border-2 border-gray-500 rounded-xl'>
+          <div className='flex flex-col text-center items-center justify-center bg-gray-200 mx-auto w-full max-w-[300px] h-[200px]  border-2 border-gray-500 rounded-xl'>
             <p className={awardTitleClass}>Least Consistent Rater</p>
             <p className='text-sm'>{leastConsistentRater.value}</p>
             <p className='text-sm'>Standard Deviation: {leastConsistentRater.sdRating.toFixed(2)}</p>
           </div>
-          <div className='flex flex-col text-center items-center justify-center bg-gray-200 mx-auto w-[300px] h-[200px]  border-2 border-gray-500 rounded-xl'>
+          <div className='flex flex-col text-center items-center justify-center bg-gray-200 mx-auto w-full max-w-[300px] h-[200px]  border-2 border-gray-500 rounded-xl'>
               <p className={awardTitleClass}>Chooses the best books</p>
               <p className='text-sm'>{bestSelector.value}</p>
               <p className='text-sm'>{bestSelector.avgRating.toFixed(2)}</p>
             </div>
       </div>)}
 
-      <div className={`grid grid-cols-${topReadGenres.length} text-center justify-center items-center bg-blue-200 h-[300px] mx-10 mb-10`}>
+      <div className={`flex flex-wrap text-center justify-center items-center bg-blue-200 gap-8 py-10 mx-10 mb-10`}>
         {
           topReadGenres.length > 0 && topReadGenres.map((genre_row) => {
             let genre = genre_row.genre
@@ -233,7 +230,7 @@ const GroupAnalysis = (props) => {
               }
             }
             return (
-              <div className='flex flex-col items-center text-center justify-center bg-gray-200 mx-auto h-[200px] w-[300px] border-2 border-gray-500 rounded-xl'>
+              <div className='flex flex-col items-center text-center justify-center bg-gray-200 mx-auto h-[200px] border-2 border-gray-500 rounded-xl p-2 w-full max-w-[300px]'>
                 <p className={awardTitleClass}>Biggest {genre} Fan</p>
                 <p className='text-sm'>{memberWinner}</p>
                 <p className='text-sm'>{winnerRating.toFixed(2)} Avg Rating</p>

@@ -38,8 +38,8 @@ const TimelineAnalysis = (props) => {
         const book = payload[0].payload
 
         return(
-          <div className = 'bg-white border-2'>
-            <div className = 'flex gap-3'>
+          <div className = 'bg-white border-2 break-words '>
+            <div className = 'flex gap-3 mr-5'>
               <img src = {book.Thumbnail}/>
               <div className  = 'flex-1 justify-center'>
                 <p>{book.Book} by {book.Author}</p>
@@ -65,15 +65,15 @@ const TimelineAnalysis = (props) => {
         </select>
         </div>)
       }
-      <div className = 'grid grid-cols-[3fr_1fr] p-6'>
-        <div className = 'w-full h-[400px]'>
+      <div className = 'grid xl:grid-cols-[3fr_1fr] p-6'>
+        <div className = 'w-full h-[400px] mb-10'>
           <h1 className = 'font-bold pb-5 text-xl'>Do you prefer older books or newer books{selectedFilterAuthor == 'All Authors' ? '' : ` by ${selectedFilterAuthor}`}?</h1>
           <ResponsiveContainer width="100%" height = "90%">
-            <ScatterChart hmargin={{ top: 20, right: 20, bottom: 40, left: 20 }}>
+            <ScatterChart margin={{ top: 20, right: 10, bottom: 40, left: 10 }}>
             <CartesianGrid />
             <XAxis tickFormatter={(value) => Math.round(value)} label = {{value: 'Year Published', position :'insideBottom', offset: -25}} type = 'number' scale = 'linear' domain={['dataMin-1', 'dataMin+1']}  tickCount={Math.min(numYears, 20)} dataKey="Year" name="Year Published" />
             <YAxis dataKey="Rating" name="Rating" domain={[1, 10]} tickCount = {10}/>
-            <Tooltip content={<CustomTooltip/>}  isAnimationActive = {false}/>
+            <Tooltip content={<CustomTooltip/>}  isAnimationActive = {false} position = {typeof window !== 'undefined' && window.innerWidth < 768 ? { x: 0, y: 0 } : undefined}/>
             <Scatter name="Books" data= {props.sort_table(plotData, 'Year', true)} fill="#ef4444" />
             </ScatterChart>
           </ResponsiveContainer>

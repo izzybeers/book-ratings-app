@@ -4,8 +4,44 @@ import StarsDisplay from './StarsDisplay';
 
 const BookScroller = (props) => {
     const [currentIndex, setCurrentIndex] = useState(0)
+    const [itemsPerPage, setItemsPerPage] = useState(30)
+    const [cols, setCols] = useState(10)
 
-    useEffect(() => setCurrentIndex(0), [props])
+    useEffect(() => setCurrentIndex(0), [props.data])
+
+    useEffect(() => {
+      const handleResize = () =>{
+        const width = window.innerWidth
+        if (width > 1800) {
+          let calculatedCols = Math.floor(width / 190)
+          setCols(calculatedCols)
+          setItemsPerPage(calculatedCols*3)
+          } else if (width >= 1536) { // 2xl screen
+              setItemsPerPage(30); 
+              setCols(10)
+          } else if (width >= 1280) { // xl screen
+              setItemsPerPage(24); 
+              setCols(8)
+          } else if (width >= 1024) { // lg screen
+              setItemsPerPage(21); 
+              setCols(7)
+          } else if (width >= 768) { // md screen
+              setItemsPerPage(24);  
+              setCols(6)
+          } else if (width >= 640) {
+              setItemsPerPage(20) //sm screen
+              setCols(5)
+          } else { // mobile screen: 2 columns * 3 rows
+              setItemsPerPage(16);  
+              setCols(4)
+          }
+        }
+        setCurrentIndex(0)
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+      }, [])
 
     const sorted_data = [...props.data].sort((a,b) => {
             if (a['Rating'] === b['Rating']) {
@@ -15,26 +51,29 @@ const BookScroller = (props) => {
             }
         }
         )
-        const itemsPerPage = 30
-        const maxPage = Math.ceil(sorted_data.length/itemsPerPage)
-        const startBookIndex = currentIndex*itemsPerPage
-        const endBookIndex = itemsPerPage*(currentIndex + 1) < sorted_data.length ? itemsPerPage*(currentIndex + 1)  :  sorted_data.length
-        const currentPageBooks = sorted_data.slice(startBookIndex, endBookIndex)
+  const maxPage = Math.ceil(sorted_data.length/itemsPerPage)
+  const startBookIndex = currentIndex*itemsPerPage
+  const endBookIndex = itemsPerPage*(currentIndex + 1) < sorted_data.length ? itemsPerPage*(currentIndex + 1)  :  sorted_data.length
+  const currentPageBooks = sorted_data.slice(startBookIndex, endBookIndex)
+  console.log(`Start to end: ${startBookIndex} to ${endBookIndex}`)
+  console.log(`window size: ${window.innerWidth}`)
+  console.log(`items per page: ${itemsPerPage}`)
   return (
     <div className = 'flex items-center h-[92vh] pt-12'>
        <div className = 'flex'>
           {currentIndex > 0 && (<BsChevronCompactLeft className = 'cursor-pointer inline-block' onClick = {() => setCurrentIndex(prevCount => prevCount - 1)}/>)}
         </div>
-        <div className = 'flex flex-wrap justify-center'>
+        <div className = 'max-w-[1600px] mx-auto gap-2 grid' style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
         {
             currentPageBooks.map((book) =>  {
               return (
               <div>
-                <div className='px-5 py-2 w-32 md:w-40 lg:w-44'>
-                  <div className='flex h-40 md:h-48 lg:h-52'>
-                      <img className='items-center justify-center' src={book.Thumbnail} alt={`${book.Author} - ${book.Book}`} title={`${book.Author} - ${book.Book} (${book.Year})`}></img>
+                <div className='px-5 py-2 w-32 w-40 lg:w-44'>
+                  <div className='flex h-40 lg:h-56'>
+                      <img className='items-start justify-center' src={book.Thumbnail} alt={`${book.Author} - ${book.Book}`} title={`${book.Author} - ${book.Book} (${book.Year})`}></img>
                   </div>
                   <StarsDisplay Rating = {book.Rating}/>
+
                 </div>
               </div>
               )

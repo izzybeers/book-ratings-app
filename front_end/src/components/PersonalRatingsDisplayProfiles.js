@@ -3,7 +3,7 @@ import { mean, standardDeviation, median }  from 'simple-statistics'
 
 const PersonalRatingsDisplayProfiles = (props) => {
   return (
-    <div className = 'border border-[4px] border-gray-800 bg-orange-100 mx-2 mb-10 py-3 px-4'>
+    <div className = 'border border-[4px] border-gray-800 bg-orange-100 mx-4 mb-10 py-3 px-4'>
         <h1 className = 'text-[20px] font-bold text-center mb-5'>{props.groupTitle}</h1>
         <div className = 'grid grid-cols-3'>
             <div className = 'flex flex-col text-center'>
@@ -20,17 +20,19 @@ const PersonalRatingsDisplayProfiles = (props) => {
             </div>
         </div>
         {props.groupData.length > 0 &&
-        (<div className = {`grid grid-cols-${props.groupGenres.length} `}>
+        (<div className = {`grid grid-cols-${props.groupGenres.length}`}>
         {props.groupGenres.map((row) => {
-            return (<div className = 'flex items-center text-center justify-center border border-[1px] border-gray-400 bg-gray-200 my-3 mx-1 h-[50px]'><p className = 'm-2 text-[16px] font-bold text-blue-800 p-1 m-2 text-center'>{row.genre}</p></div>)
+            return (<div className = 'flex items-center text-center justify-center border border-[1px] border-gray-400 bg-gray-200 my-3 mx-1 h-[50px]'>
+                <p className = 'm-2 text-[16px] font-bold text-blue-800 p-1 m-2 text-center'>{row.genre}</p>
+            </div>)
         })}
         </div>)}
         {props.groupAuthor != null &&
-        props.groupAuthor.map((row) => {
-            return (<div className = 'flex flex-col text-center border border-[1px] border-gray-400 bg-gray-200 mx-[120px] mt-1 px-5 py-2'>
-                <p className = 'text-lg font-bold'>{row.value}</p>
-                <p className = 'text-xs'>Most Frequent Author In Group</p>
-                </div>)
+            props.groupAuthor.map((row) => {
+                return (<div className = 'flex flex-col text-center border border-[1px] border-gray-400 bg-gray-200 mx-[60px] my-[40px] mt-1 px-5 py-3'>
+                    <p className = 'text-lg font-bold'>{row.value}</p>
+                    <p className = 'text-xs'>Most Frequent Author In Group</p>
+                    </div>)
         })}
         {/* {favorites.length > 0 &&
         favoritesBySelector.map((row) => {

@@ -52,7 +52,7 @@ const EditRatingInfo = (props) => {
          }
 
   return (
-    <div className = 'grid grid-cols-5 items-center justify-center mr-5 w-3/4'>
+    <div className = 'flex flex-wrap mr-5 mb-20'>
       <img className = 'col-span-1  pr-3' src = {props.selectedbookdata.thumbnail_url}></img>
       <div className = 'flex flex-col col-span-4 pl-3'>
         <p className = 'text-xs'>{newRatingMessage}</p>
