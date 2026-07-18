@@ -16,3 +16,5 @@ COPY . .
 # Run the web service using Gunicorn.
 # Cloud Run automatically sets the $PORT environment variable.
 CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:app
+
+EXPOSE 8080
