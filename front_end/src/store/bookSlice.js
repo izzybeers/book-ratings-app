@@ -47,7 +47,7 @@ const bookSlice = createSlice({
     }
 })
 
-export const genreOptions = ['Action/Adventure', 'Drama', 'Fantasy', 'Historical', 'Horror', 'Literary Fiction', 'Mystery/Crime', 'Non-Fiction', 'Post-Apocalyptic', 'Romance', 'Science Fiction', 'Southern Gothic', 'Thriller/Suspense', 'Western']
+export const genreOptions = ['Action / Adventure', 'Drama', 'Fantasy', 'Historical', 'Horror', 'Literary Fiction', 'Mystery / Crime', 'Non-Fiction', 'Post-Apocalyptic', 'Romance', 'Science Fiction', 'Southern Gothic', 'Thriller / Suspense', 'Western']
 export const {addBook} = bookSlice.actions
 export default bookSlice
 

@@ -59,16 +59,19 @@ def pull_book_info():
     #         "limit": 5
     #     }
 
-    googlebooks_response = requests.get(googlebooks_endpoint, params = googlebooks_params)
-    # openlibrary_response = requests.get(openlibrary_endpoint, params = openlibrary_params)
-    print(googlebooks_response.json())
-    if(googlebooks_response.status_code == 200 and googlebooks_response.json().get('totalItems') > 0):
-        googlebooks_data = process_googlebook(title, author, googlebooks_response.json(), all_matches)
+    googlebooks_response = requests.get(googlebooks_endpoint, params=googlebooks_params)
 
-    # if(openlibrary_response.status_code == 200):
-    #     openlibrary_data = process_openlibrary_data(title, openlibrary_response.json())
+    googlebooks_data = []
 
-    return(googlebooks_data)
+    if googlebooks_response.status_code == 200 and googlebooks_response.json().get('totalItems', 0) > 0:
+        googlebooks_data = process_googlebook(
+            title,
+            author,
+            googlebooks_response.json(),
+            all_matches
+        )
+
+    return googlebooks_data
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

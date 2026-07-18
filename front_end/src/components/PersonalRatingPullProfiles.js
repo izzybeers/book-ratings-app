@@ -37,7 +37,7 @@ const PersonalRatingProfilesAnalysis = (props) => {
 
 
   return (
-    <div className = 'flex grid grid-cols-4'>
+    <div className = 'flex grid md:grid-cols-2 2xl:grid-cols-4'>
         <PersonalRatingsDisplayProfiles groupData = {favorites} groupTitle = "Profile of Favorites (Rating 9-10)" groupGenres = {favoritesTopGenres} groupAuthor = {favoritesTopAuthor}/>
         <PersonalRatingsDisplayProfiles groupData = {secondGroup} groupTitle = "Profile of High Rated Books (Rating 7-8)" groupGenres = {secondGroupTopGenres} groupAuthor = {secondGroupTopAuthor}/>
         <PersonalRatingsDisplayProfiles groupData = {middleGroup} groupTitle = "Profile of Medium Rated Books (Rating 4-6)" groupGenres = {middleGroupTopGenres} groupAuthor = {middleGroupTopAuthor}/>

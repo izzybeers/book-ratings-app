@@ -129,8 +129,8 @@ const HeadToHead = (props) => {
       (<div className = 'items-center text-center text-lg'><p>Loading...</p></div>)
       :
     (
-    <div className='grid grid-cols-[5fr_3fr]'>
-      <div id='h2h-left-side' className='my-10 ml-10 border border-2'>
+    <div className='grid xl:grid-cols-[5fr_3fr]'>
+      <div id='h2h-left-side' className='my-10 lg:mx-5 border border-2'>
         <ShowSharedBooksCount sharedBookData = {ratings_data_filtered} uniqueValues = {props.uniqueValues}/>
         {/* <p className='text-[50px] font-bold my-10'><span className='text-[75px] text-red-500 text-4xl px-2'>{shared_books_both_members.length}</span> Books Rated Together </p> */}
         <div className='flex flex-col px-20'>
@@ -140,10 +140,10 @@ const HeadToHead = (props) => {
               <MemberAverageVisualBar row = {row} namePrefix = {''} uniqueValues = {props.uniqueValues}/>)
           })}
         </div>
-        <div className='flex grid grid-cols-3 w-full items-center'>
-          <div className = 'flex flex-col border-[10px] border-gray-500 bg-gray-100 px-2 py-12 mt-10 mx-20 justify-center items-center'>
-            <p className = 'font-bold text-xl'>Our Favorite Author <br></br> <span className = 'font-bold text-lg'>{avg_by_author[0].value}</span></p>
-            <p className = 'font-bold'><span className = 'text-red-500 text-md font-bold'>{avg_by_author[0].count/2} </span> Books Rated</p>
+        <div className='grid md:grid-cols-3 w-full items-center'>
+          <div className = 'flex flex-col border-[10px] border-gray-500 bg-gray-100 px-2 h-48 mt-10 justify-self-center justify-center items-center text-center'>
+            <p className = 'font-bold text-md 2xl:text-xl'>Our Favorite Author <br></br> <span className = 'font-bold text-sm 2xl:text-lg'>{avg_by_author[0].value}</span></p>
+            <p className = 'font-bold text-sm 2xl:text-md'><span className = 'text-red-500 text-sm 2xl:text-md font-bold'>{avg_by_author[0].count/2} </span> Books Rated</p>
           </div>
           <div className = 'flex flex-col'>
             <p className='text-[40px] font-bold mt-10'>Who picks the best books?</p>
@@ -152,8 +152,8 @@ const HeadToHead = (props) => {
                 const rows = selectorWideDf.filter((row) => row.BookSelector == selector)
                 const groupAvg = rows.reduce((sum, row) => sum + row.avgRating, 0) / 2
                 return (
-                  <div className='flex flex-col h-full items-center mx-6'>
-                    <div className='flex relative h-full gap-4 justify-center'>
+                  <div className='flex flex-col h-full items-center mx-2'>
+                    <div className='flex relative h-full gap-2 justify-center'>
 
                       {rows.map((rating) => {
                         return (
@@ -177,14 +177,14 @@ const HeadToHead = (props) => {
               })}
             </div>
           </div>
-          <div className = 'flex flex-col border-[10px] border-gray-500 bg-gray-100 px-2 py-12 mt-10 mx-auto justify-center items-center'>
-            <p className = 'font-bold text-xl'>Our Favorite Genre<br></br><span className='font-bold text-lg'>{avg_by_genre[0].genre}</span> </p>
-            <p className = 'font-bold'><span className = 'text-red-500 text-md font-bold'>{avg_by_genre[0].numBooks}</span> Books Rated</p>
+          <div className = 'flex flex-col border-[10px] border-gray-500 bg-gray-100 px-2 h-48 mt-10 justify-self-center justify-center items-center text-center'>
+            <p className = 'font-bold text-md 2xl:text-xl'>Our Favorite Genre<br></br><span className='font-bold text-sm 2xl:text-lg'>{avg_by_genre[0].genre}</span> </p>
+            <p className = 'font-bold text-sm 2xl:text-md'><span className = 'text-red-500 text-sm 2xl:text-md font-bold'>{avg_by_genre[0].numBooks}</span> Books Rated</p>
           </div>
         </div>
 
       </div>
-      <div id='h2h-right-side' className='my-10 mr-10 border border-2 border-gray-300'>
+      <div id='h2h-right-side' className='my-10 mx-5 border border-2 border-gray-300'>
         <div className='grid grid-cols-3 text-center bg-gray-300'>
           <div className={selectedH2HView == 'favorite' ? selectedH2HViewClass : unselectedH2HViewClass}>
             <label className='cursor-pointer'>

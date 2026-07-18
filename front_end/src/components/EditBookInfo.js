@@ -61,29 +61,27 @@ const EditBookInfo = (props) => {
 
     }
     return (
-        <div className='flex flex-col mx-10 bg-green-100 items-center'>
+        <div className='flex flex-col mx-10 bg-green-100 justify-center'>
             <p className='font-semibold p-2'>{props.fillOutDataMessage}</p>
-            <div className='flex items-center'>
+            <div className='flex flex-wrap justify-center'>
                 <div className='flex flex-col m-2'>
                     <label className='font-bold h-7 m-1'> Author <span className='text-red-500 text-2xl'>*</span></label>
-                    <input className='border border-gray-600' type='text' value={author} onChange={(e) => setAuthor(e.target.value)}></input>
+                    <input className='border border-gray-600 text-center' type='text' value={author} onChange={(e) => setAuthor(e.target.value)}></input>
                 </div>
                 <div className='flex flex-col m-2'>
                     <label className='font-bold h-7 m-1'> Title <span className='text-red-500 text-2xl'>*</span></label>
-                    <input className='border border-gray-600' type='text' value={title} onChange={(e) => setTitle(e.target.value)}></input>
+                    <input className='border border-gray-600 text-center' type='text' value={title} onChange={(e) => setTitle(e.target.value)}></input>
                 </div>
-            </div>
-            <div className='flex items-center items-end'>
                 <div className='flex flex-col m-2'>
                     <label className='font-bold m-1 h-7'>Year Published</label>
-                    <input className='border border-gray-600' type='text' value={yearPublished} onChange={(e) => setYearPublished(e.target.value)}></input>
+                    <input className='border border-gray-600 text-center' type='text' value={yearPublished} onChange={(e) => setYearPublished(e.target.value)}></input>
                 </div>
                 <div className='flex flex-col m-2'>
                     <label className='font-bold h-7 m-1'>Approx. Word Count</label>
-                    <input className='border border-gray-600' type='text' value={wordCount} onChange={(e) => setWordCount(e.target.value)}></input>
+                    <input className='border border-gray-600 text-center' type='text' value={wordCount} onChange={(e) => setWordCount(e.target.value)}></input>
                 </div>
             </div>
-            <div className='flex items-end'>
+            <div className='flex justify-center'>
                 <div className='flex flex-col m-2'>
                     <label className='font-bold m-1 h-7'>Select best age range<span className='text-red-500 text-2xl'>*</span></label>
                     <select className='border border-gray-600' value={ageGroup} onChange={(e) => setAgeGroup(e.target.value)}>
@@ -101,7 +99,7 @@ const EditBookInfo = (props) => {
                     </select>
                 </div>
             </div>
-            <div className='flex flex-col m-2'>
+            <div className='flex flex-col m-2 mx-auto'>
                 <label className='font-bold m-1 h-7'>Select Primary Genre<span className='text-red-500 text-2xl'>*</span></label>
                 <select className='border border-gray-600' value={primaryGenre} onChange={(e) => { setPrimaryGenre(e.target.value); setSecondaryGenres([]) }}>
                     {genreOptions.map((opt) => {
@@ -110,12 +108,12 @@ const EditBookInfo = (props) => {
                     <option>Other</option>
                 </select>
             </div>
-            <div className='flex flex-col m-2 items-center'>
+            <div className='flex flex-col m-2 items-center mx-auto'>
                 <label className='font-bold m-1'>Select up to 2 secondary genres (optional)</label>
-                <div className='grid grid-cols-3 gap-1'>
+                <div className='flex flex-wrap gap-1 mx-auto px-[200px] max-w-[2500px] justify-center'>
                     {genreOptions.map((opt) => {
                         return opt != primaryGenre &&
-                            (<div className='flex'>
+                            (<div className='flex mx-2'>
                                 <input type='checkbox' checked={secondaryGenres.includes(opt)} className='border border-gray-600'
                                     onChange={(e) => {
                                         if (e.target.checked) {
@@ -132,7 +130,7 @@ const EditBookInfo = (props) => {
                 {console.log(secondaryGenres)}
             </div>
             {secondaryGenres.length <= 2 &&
-                (<button onClick={() => { props.handleSelection(); ingestNewBook() }} className='border-2 border-gray-800 bg-red-200 text-3xl p-2 m-4 w-48'>{props.buttonText}</button>)
+                (<button onClick={() => { props.handleSelection(); ingestNewBook() }} className='border-2 border-gray-800 bg-red-200 text-3xl p-2 my-2 mx-auto w-48'>{props.buttonText}</button>)
             }
             <p className='my-2'>{addedBookMessage}</p>
         </div>

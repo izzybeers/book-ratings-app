@@ -55,8 +55,8 @@ const AddNew = () => {
     <div>
       <Nav />
       <p className='text-2xl font-bold text-center p-5'>Add or update books, ratings, and members</p>
-      <div className='grid grid-cols-2 items-start'>
-        <div className='flex-col mx-10 mt-3 mb-5'>
+      <div className='flex flex-col justify-center items-center'>
+        <div className='flex flex-col mx-10 mt-3 mb-5 items-center'>
           <p class='text-lg font-bold my-2'>Choose a book to update:</p>
           <select className='border border-gray-800 flex h-7 w-96' value={selectedBook || ''}
             onChange={(e) => { setSelectedBook(e.target.value) }}>
@@ -70,18 +70,18 @@ const AddNew = () => {
             }
           </select>
           <div>
-             <em className='text-xs p-1 cursor-pointer' onClick={() => {setSearchMode(true); setSelectedBook(null)}}>Don't see your book here? Click here to add a new book to the database.</em>
+             <em className='flex text-xs p-1 cursor-pointer justify-center' onClick={() => {setSearchMode(true); setSelectedBook(null)}}>Don't see your book here? Click here to add a new book to the database.</em>
             {selectedBook &&
               (
-                <div className='my-10'><EditBookInfo key={selectedBook} id = {selectedBookData.id} author={selectedBookData.Author} title={selectedBookData.Book} primaryGenre={selectedBookData.PrimaryGenre} secondaryGenres={selectedBookData.SecondaryGenres} ageGroup={selectedBookData.Age} wordCount={selectedBookData.WordCount} yearPublished={selectedBookData.Year} thumbnail = {selectedBookData.thumbnail_url} bookSelector = {selectedBookData.Book_Selector} new = {false} sort_table={sort_table}
+                <div className='flex my-10 text-center'><EditBookInfo key={selectedBook} id = {selectedBookData.id} author={selectedBookData.Author} title={selectedBookData.Book} primaryGenre={selectedBookData.PrimaryGenre} secondaryGenres={selectedBookData.SecondaryGenres} ageGroup={selectedBookData.Age} wordCount={selectedBookData.WordCount} yearPublished={selectedBookData.Year} thumbnail = {selectedBookData.thumbnail_url} bookSelector = {selectedBookData.Book_Selector} new = {false} sort_table={sort_table}
                   buttonText='Update' handleSelection={updateBookInfo} fillOutDataMessage='If any book info is wrong, change it here!' />
                 </div>)
               }
                {searchMode && (<BookSearch setSearchMode={setSearchMode} sort_table = {sort_table} />)}
           </div>
         </div>
-        <div className='flex-col mx-10 mt-3 mb-5'>
-          <p class='text-lg font-bold my-2'>Choose a member to update:</p>
+        <div className='flex flex-col mx-10 mt-3 mb-5 items-center'>
+          <p class='text-lg font-bold my-2 text-center'>Choose a member to update:</p>
           <select className='border border-gray-800 flex h-7 w-96' value={selectedUpdateMember}
             onChange={(e) => { setSelectedUpdateMember(e.target.value); setMemberEditMode(false); }}>
             <option value=''></option>
@@ -92,16 +92,11 @@ const AddNew = () => {
               })
             }
           </select>
-          <em className='text-xs p-1 cursor-pointer' onClick={() => { setMemberEditMode(true); setMemberKey(prev => prev + 1) }}>Member is not listed here? Click here to add a new member to the database.</em>
-          <div>
-            {selectedUpdateMember &&
-              (
-                <div className='my-10 w-1/2'>
-
-                </div>)
-            }
-            {memberEditMode && (<EditMemberInfo key={memberKey} />)}
-            {selectedUpdateMember && selectedBook && <EditRatingInfo key = {[selectedUpdateMember, selectedBook]} member={selectedUpdateMember} memberid={memberData.filter((row) => row.MemberName == selectedUpdateMember)[0].MemberID} book={selectedBook} selectedbookdata = {selectedBookData}/>}
+          <em className='text-xs p-1 cursor-pointer text-center' onClick={() => { setMemberEditMode(true); setMemberKey(prev => prev + 1) }}>Member is not listed here? Click here to add a new member to the database.</em>
+          <div className = 'flex justify-center mt-5'>
+            {memberEditMode && memberEditMode && (<EditMemberInfo key={memberKey} />)}
+            {selectedUpdateMember && selectedBook && !memberEditMode && <EditRatingInfo key = {[selectedUpdateMember, selectedBook]} member={selectedUpdateMember} memberid={memberData.filter((row) => row.MemberName == selectedUpdateMember)[0].MemberID} book={selectedBook} selectedbookdata = {selectedBookData}/>}
+            {selectedUpdateMember && !memberEditMode && !selectedBook && <p>To add a new rating, please select a book.</p>}
           </div>
         </div>
       </div>

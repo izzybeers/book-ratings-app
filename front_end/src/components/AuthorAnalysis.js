@@ -14,15 +14,15 @@ const AuthorAnalysis = (props) => {
 
   return (
     <div className = 'my-5 text-center'>
-        <div className = 'grid grid-cols-2'>
+        <div className = 'grid sm:grid-cols-2'>
             <h2 className = 'text-center px-5 pt-10 font-bold border-gray-600 border[2] text-3xl'>My Total Books Rated: {data.length}</h2>
             <h2 className = 'text-center px-5 pt-10 font-bold border-gray-600 border[2] text-3xl'>My Average Rating: {data.length > 0 ? mean(data.map((item) => item.Rating)).toFixed(1) : ''}/10</h2>
         </div>
-        <div className = 'border border-gray-600  bg-gray-100  my-16 py-5'>
+        <div className = 'border border-gray-600  bg-gray-100  my-16 py-5 justify-center'>
             <p className = 'font-extrabold text-2xl text-center'>My Ratings By Author</p>
-            <div className = 'grid grid-cols-4 mx-2 py-5'>
+            <div className = 'grid md:grid-cols-2 xl:grid-cols-4 mx-2 py-5 justify-center'>
                 <div>
-                    <p  className =  'text-3xl'> ❤️ </p>
+                    <p  className =  'text-3xl mt-4'> ❤️ </p>
                     {greatAuthors.length > 0 ? 
                     (<table className = 'ml-4 mt-5 border border-2 border-gray-700'>
                         <thead>
@@ -50,9 +50,9 @@ const AuthorAnalysis = (props) => {
                     }
                 </div>
                 <div>
-                    <p   className =  'text-3xl font-extrabold'> 👍 </p>
+                    <p   className =  'text-3xl mt-4 font-extrabold'> 👍 </p>
                     {goodAuthors.length > 0 ? 
-                    (<table className = 'ml-4  mt-5 border border-2 border-gray-700'>
+                    (<table className = 'ml-4 mt-5 border border-2 border-gray-700'>
                         <thead>
                             <tr>
                                 <th className = 'h-[40px] font-extrabold text-md px-1'></th>
@@ -78,7 +78,7 @@ const AuthorAnalysis = (props) => {
                     }
                 </div>
                 <div>
-                    <p  className =  'text-3xl font-extrabold'> 😐 </p>
+                    <p  className =  'text-3xl mt-4 font-extrabold'> 😐 </p>
                     {okayAuthors.length > 0 ?
                     (<table className = 'ml-4 mt-5 border border-2 border-gray-700'>
                         <thead>
@@ -106,7 +106,7 @@ const AuthorAnalysis = (props) => {
                     }
                 </div>
                 <div>
-                    <p  className =  'text-3xl font-extrabold'> 👎 </p>
+                    <p  className =  'text-3xl mt-4 font-extrabold'> 👎 </p>
                     {badAuthors.length > 0 ? 
                         (<table className = 'ml-4 mt-5 border border-2 border-gray-700'>
                             <thead className = 'h-8'>
