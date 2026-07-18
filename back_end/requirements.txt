@@ -4,4 +4,5 @@ requests==2.32.3
 pandas>=2.3.3
 supabase>=2.31.0,<3
 websockets>=13
-dotenv
+gunicorn==26.0.0
+python-dotenv==1.2.2
