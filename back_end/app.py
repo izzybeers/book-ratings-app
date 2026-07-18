@@ -63,7 +63,7 @@ def pull_book_info():
 
     googlebooks_data = []
 
-    if googlebooks_response.status_code == 200 and googlebooks_response.json().get('totalItems', 0) > 0:
+    if googlebooks_response.status_code == 200:
         googlebooks_data = process_googlebook(
             title,
             author,
@@ -75,4 +75,3 @@ def pull_book_info():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-            

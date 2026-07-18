@@ -19,7 +19,8 @@ const BookSearch = (props) => {
     const newBookId = maxBookId + 1
 
     const handleSearch = async() => {
-        const response = await fetch(`http://127.0.0.1:5000/api/search?text=${queryText}&all_matches=True`)
+        console.log("MY API URL IS:", process.env.REACT_APP_API_URL);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/search?text=${queryText}&all_matches=True`)
         if (queryText.length > 0)
         {
             setShowSearchResults(true)
@@ -56,7 +57,7 @@ const BookSearch = (props) => {
                 <div className = 'mt-4 mx-4'>
                     <input className = 'border justify-start border-gray-600 w-60 my-2 mr-2 p-1 h-8' type = 'text' placeholder = 'Search for a book...'
                     onChange = {(e) => setQueryText(e.target.value)}
-                    onKeyDown={(e) => {if (e.key === 'Enter' & queryText.length > 0) {handleSearch(queryText)}}}></input>
+                    onKeyDown={(e) => {if (e.key === 'Enter' && queryText.length > 0) {handleSearch(queryText)}}}></input>
                     <button className = 'border justify-start border-gray-600 my-2 mx-2 p-1  h-8 active:bg-gray-300' onClick = {() => handleSearch(queryText)}>Search</button>
                     <button className = 'border justify-start border-gray-600 my-2 mx-2 p-1 h-8 active:bg-gray-200' onClick = {() => setBookSearchResult([])}>Reset</button>
                  </div>
