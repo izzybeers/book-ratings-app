@@ -70,7 +70,7 @@ const GroupAnalysis = (props) => {
   const awardTitleClass = ' text-lg lg:text-xl font-bold mt-1 mb-2'
   return (
     <div>
-      <div className='flex flex-row gap-12 mx-10 my-10'>
+      <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 mx-2 sm:mx-10 my-10'>
         <div onClick={() => setViewChoice('Books Rated By Every Member')} className={viewChoice == 'Books Rated By Every Member' ? selectedClassName : unselectedClassName}>
           <p className='text-4xl md:text-[50px] font-bold text-center'>{booksRatedByAllMembers.length}</p>
           <p className='text-center text-sm'>Books Rated By Every Member </p>
