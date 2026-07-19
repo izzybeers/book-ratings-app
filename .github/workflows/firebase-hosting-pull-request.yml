@@ -17,7 +17,7 @@ jobs:
         env:
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
           REACT_APP_supabase_endpoint: ${{ secrets.SUPABASE_ENDPOINT }}
-          REACT_APP_supabase_api_key: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+          REACT_APP_supabase_api_key: ${{ secrets.SUPABASE_API_KEY }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_BOOKRATINGS_486201 }}
