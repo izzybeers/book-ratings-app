@@ -110,7 +110,7 @@ const EditBookInfo = (props) => {
             </div>
             <div className='flex flex-col m-2 items-center mx-auto'>
                 <label className='font-bold m-1'>Select up to 2 secondary genres (optional)</label>
-                <div className='flex flex-wrap gap-1 mx-auto px-[200px] max-w-[2500px] justify-center'>
+                <div className='flex flex-wrap gap-1 mx-auto px-2 sm:px-10 lg:px-[200px] max-w-[2500px] justify-center'>
                     {genreOptions.map((opt) => {
                         return opt != primaryGenre &&
                             (<div className='flex mx-2'>
