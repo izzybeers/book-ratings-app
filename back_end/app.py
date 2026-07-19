@@ -40,7 +40,7 @@ def pull_book_info():
     if not all_matches:
         all_matches = False
     
-    if strict == True | strict == 'True':
+    if strict == True:
         googlebooks_q = f"intitle:{title.replace(' ','+')}+inauthor:{author.replace(' ','+')}"
     else:
         googlebooks_q = text.strip().replace(' ', '+')
@@ -60,6 +60,15 @@ def pull_book_info():
     #     }
 
     googlebooks_response = requests.get(googlebooks_endpoint, params=googlebooks_params)
+    if not googlebooks_endpoint:
+        raise RuntimeError(
+            "Missing Cloud Run environment variable: googlebooks_endpoint"
+        )
+
+    if not google_books_api_key:
+        raise RuntimeError(
+            "Missing Cloud Run environment variable: google_books_api_key"
+        )
 
     googlebooks_data = []
 
