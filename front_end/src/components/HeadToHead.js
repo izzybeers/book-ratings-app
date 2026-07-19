@@ -22,7 +22,6 @@ const HeadToHead = (props) => {
 
 
   const filteredData = props.data.filter((row) => [props.selectedUser, props.headToHeadUser].includes(row.Member))
-
   const shared_books_both_members = props.groupBy(filteredData, 'bookid', 2).map((row) => row.value)
   const member_ids_for_analysis = props.uniqueValues(filteredData, 'memberid')
   const member_names_for_analysis = props.uniqueValues(filteredData, 'Member')
@@ -66,28 +65,16 @@ const HeadToHead = (props) => {
         displayName: [`${book2.Author} - ${book2.Book}`]
       }
     }
+  }).filter(Boolean)
 
-  })
+  if (combinedRatingsTableWide.length === 0) {
+  return <p className = 'm-3 font-bold'>Rate at least one book in common to see Head-to-Head Analysis.</p>
+}
 
   //setting the criteria to 4 as the minimum count means 2 distinct books (2 ratings per 2 books) in order to be considered for favorite author
   const avg_by_author = props.sort_table(props.groupBy(ratings_data_filtered, 'Author', 4), 'avgRating', false)
   console.log('author averages')
   console.log(avg_by_author)
-
-  // const avg_by_genre = props.sort_table(genreOptions.map((genre) => {
-  //   const booksInGenre = ratings_data_filtered.filter((row) => row.PrimaryGenre == genre || row.SecondaryGenres?.includes(genre))
-  //   const numBooks = [...new Set(booksInGenre.map(book => book.bookid))].length
-  //   if (numBooks >= 3)
-  //   {
-  //     const avgRating = mean(booksInGenre.map((book) => book.Rating))
-      
-  //       return {
-  //         genre: genre,
-  //         avgRating: avgRating,
-  //         numBooks: numBooks
-  //       }
-  //     }
-  // }).filter(Boolean), 'avgRating', false)
 
   const avg_by_genre = props.avgByGenre(ratings_data_filtered, 3, true)
 
@@ -120,19 +107,25 @@ const HeadToHead = (props) => {
   const selectedH2HViewClass = unselectedH2HViewClass + ' border-[5px] border-blue-800'
 
   const selectorWideDf = props.sort_table(avg_by_member_for_selector1.concat(avg_by_member_for_selector2), 'BookSelector', true)
-  const raterColorMap = {
-    [props.uniqueValues(selectorWideDf, 'value')[0]]: 'bg-blue-400',
-    [props.uniqueValues(selectorWideDf, 'value')[1]]: 'bg-green-400'
+  console.log('selector wide df')
+  console.log(selectorWideDf)
+  let raterColorMap = []
+  if (selectorWideDf.length > 0)
+  {
+    raterColorMap = {
+        [props.uniqueValues(selectorWideDf, 'value')[0]]: 'bg-blue-400',
+        [props.uniqueValues(selectorWideDf, 'value')[1]]: 'bg-green-400'
+      }
   }
+  
   return (
     props.data.length == 0 ?
       (<div className = 'items-center text-center text-lg'><p>Loading...</p></div>)
-      :
+    :
     (
     <div className='grid xl:grid-cols-[5fr_3fr]'>
       <div id='h2h-left-side' className='my-10 lg:mx-5 border border-2'>
         <ShowSharedBooksCount sharedBookData = {ratings_data_filtered} uniqueValues = {props.uniqueValues}/>
-        {/* <p className='text-[50px] font-bold my-10'><span className='text-[75px] text-red-500 text-4xl px-2'>{shared_books_both_members.length}</span> Books Rated Together </p> */}
         <div className='flex flex-col px-20'>
           {avg_by_member.map((row) => {
             const fillPercentage = row.avgRating * 10
@@ -141,11 +134,13 @@ const HeadToHead = (props) => {
           })}
         </div>
         <div className='grid md:grid-cols-3 w-full items-center'>
-          <div className = 'flex flex-col border-[10px] border-gray-500 bg-gray-100 px-2 h-48 mt-10 justify-self-center justify-center items-center text-center'>
+          {avg_by_author.length > 0 &&
+          (<div className = 'flex flex-col border-[10px] border-gray-500 bg-gray-100 px-2 h-48 mt-10 justify-self-center justify-center items-center text-center'>
             <p className = 'font-bold text-md 2xl:text-xl'>Our Favorite Author <br></br> <span className = 'font-bold text-sm 2xl:text-lg'>{avg_by_author[0].value}</span></p>
             <p className = 'font-bold text-sm 2xl:text-md'><span className = 'text-red-500 text-sm 2xl:text-md font-bold'>{avg_by_author[0].count/2} </span> Books Rated</p>
-          </div>
-          <div className = 'flex flex-col'>
+          </div>)}
+          {selectorWideDf.length < 0 &&
+          (<div className = 'flex flex-col'>
             <p className='text-[40px] font-bold mt-10'>Who picks the best books?</p>
             <div className='flex items-center justify-center h-80 px-4 w-full gap-8'>
               {props.uniqueValues(selectorWideDf, 'BookSelector').map((selector) => {
@@ -176,11 +171,11 @@ const HeadToHead = (props) => {
                 )
               })}
             </div>
-          </div>
-          <div className = 'flex flex-col border-[10px] border-gray-500 bg-gray-100 px-2 h-48 mt-10 justify-self-center justify-center items-center text-center'>
+          </div>)}
+          {avg_by_genre.length > 0 && (<div className = 'flex flex-col border-[10px] border-gray-500 bg-gray-100 px-2 h-48 mt-10 justify-self-center justify-center items-center text-center'>
             <p className = 'font-bold text-md 2xl:text-xl'>Our Favorite Genre<br></br><span className='font-bold text-sm 2xl:text-lg'>{avg_by_genre[0].genre}</span> </p>
             <p className = 'font-bold text-sm 2xl:text-md'><span className = 'text-red-500 text-sm 2xl:text-md font-bold'>{avg_by_genre[0].numBooks}</span> Books Rated</p>
-          </div>
+          </div>)}
         </div>
 
       </div>
