@@ -40,7 +40,7 @@ def pull_book_info():
     if not all_matches:
         all_matches = False
     
-    if strict == True | strict == 'True':
+    if strict == True:
         googlebooks_q = f"intitle:{title.replace(' ','+')}+inauthor:{author.replace(' ','+')}"
     else:
         googlebooks_q = text.strip().replace(' ', '+')
