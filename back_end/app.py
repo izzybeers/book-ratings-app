@@ -7,6 +7,7 @@ import requests
 import string
 import re
 import pprint
+import time
 import pandas as pd
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -52,14 +53,28 @@ def pull_book_info():
         "langRestrict": "en",
         "printType": "books"
     }
+    max_retries = 3
+    googlebooks_response = None
 
-    # openlibrary_params = {
-    #         "q": openlibrary_q,
-    #         "fields": "title,author_name,subject,first_publish_year",
-    #         "limit": 5
-    #     }
-
-    googlebooks_response = requests.get(googlebooks_endpoint, params=googlebooks_params)
+    # Retry loop
+    for i in range(max_retries):
+        try:
+            googlebooks_response = requests.get(googlebooks_endpoint, params=googlebooks_params, timeout=5)
+            print(f"Attempt {i+1}: Received status code {googlebooks_response.status_code}", flush=True)
+            if googlebooks_response.status_code == 200:
+                break
+            if googlebooks_response.status_code in [503, 502, 504] and i < max_retries - 1:
+                print(f"Status {googlebooks_response.status_code} detected. Retrying in 1 second...", flush=True)
+                time.sleep(1) 
+                continue
+            break
+            
+        except requests.exceptions.RequestException as e:
+            print(f"Attempt {i+1} failed with exception: {e}", flush=True)
+            if i < max_retries - 1:
+                time.sleep(1)
+                continue
+            break
     if not googlebooks_endpoint:
         raise RuntimeError(
             "Missing Cloud Run environment variable: googlebooks_endpoint"
