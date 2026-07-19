@@ -64,8 +64,8 @@ const BookScroller = (props) => {
   console.log(`window size: ${window.innerWidth}`)
   console.log(`items per page: ${itemsPerPage}`)
   return (
-    <div className = 'flex items-center h-[92vh] pt-12'>
-       <div className = 'flex'>
+    <div className = 'flex items-start h-[92vh] pt-12'>
+       <div className = 'flex self-center'>
           {currentIndex > 0 && (<BsChevronCompactLeft className = 'cursor-pointer inline-block' onClick = {() => setCurrentIndex(prevCount => prevCount - 1)}/>)}
         </div>
         <div className = 'max-w-[1600px] mx-auto gap-2 grid' style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
@@ -86,7 +86,7 @@ const BookScroller = (props) => {
             }) 
         }
       </div>
-      <div className = 'flex'>
+      <div className = 'flex self-center'>
         {currentIndex < (maxPage-1) && <BsChevronCompactRight className = 'cursor-pointer inline-block' onClick = {() => setCurrentIndex(prevCount => prevCount + 1)}/>}
       </div>
     </div>
