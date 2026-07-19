@@ -19,10 +19,10 @@ const Nav = () => {
             <div className = ' px-2 sm:px-5 cursor-pointer ' onClick={() => navigate('/friend-comparisons')}>
                 <p>Analysis</p>
             </div>
-            <div className = 'px-2 px-5 cursor-pointer 'onClick={() => navigate('/add-new')}>
+            <div className = 'px-2 sm:px-5 cursor-pointer 'onClick={() => navigate('/add-new')}>
                 <p>Add New</p>
             </div>
-            <div className = 'px-2 px-5 cursor-pointer ' onClick={() => navigate('/raw-data')}>
+            <div className = 'px-2 sm:px-5 cursor-pointer ' onClick={() => navigate('/raw-data')}>
                 <p>Raw Data</p>
             </div>
             <div className = 'flex pr-5 sm:ml-auto text-xl mx-auto sm:mx-0 font-bold text-black-100'>
