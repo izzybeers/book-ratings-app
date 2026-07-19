@@ -110,10 +110,10 @@ const EditBookInfo = (props) => {
             </div>
             <div className='flex flex-col m-2 items-center mx-auto'>
                 <label className='font-bold m-1 text-center'>Select up to 2 secondary genres (optional)</label>
-                <div className='flex flex-wrap gap-3 mx-auto px-2 sm:px-6 justify-center'>
+                <div className='flex flex-wrap gap-1 mx-auto px-2 sm:px-6 justify-center'>
                     {genreOptions.map((opt) => {
                         return opt != primaryGenre &&
-                            (<div className='flex mx-2'>
+                            (<div className='flex items-center mx-2'>
                                 <input type='checkbox' checked={secondaryGenres.includes(opt)} className='border border-gray-600'
                                     onChange={(e) => {
                                         if (e.target.checked) {
@@ -122,7 +122,7 @@ const EditBookInfo = (props) => {
                                             setSecondaryGenres(secondaryGenres.filter((item) => item != opt))
                                         }
                                     }} />
-                                <option>{opt}</option>
+                                <span className = 'ml-1'>{opt}</span>
                             </div>)
                     })}
                 </div>
