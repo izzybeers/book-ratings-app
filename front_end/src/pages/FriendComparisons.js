@@ -177,7 +177,7 @@ const FriendComparisons = () => {
           <div>
             <AuthorAnalysis data = {selectedUserData} groupBy = {groupBy} sort_table = {sort_table} uniqueValues = {uniqueValues}/>
             <PersonalRatingPullProfiles data = {selectedUserData} avgByGenre = {avgByGenre} sort_table = {sort_table} groupBy = {groupBy}/>
-            <TimelineAnalysis data = {selectedUserData} groupBy = {groupBy} sort_table = {sort_table} uniqueValues = {uniqueValues}/>
+            {selectedUserData.length > 0 ? (<TimelineAnalysis data = {selectedUserData} groupBy = {groupBy} sort_table = {sort_table} uniqueValues = {uniqueValues}/>) : (<p className = 'text-center font-bold'>Rate at least one book to see timeline analysis.</p>)}
           </div>
         )
         } 

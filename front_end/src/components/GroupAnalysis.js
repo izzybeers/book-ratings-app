@@ -4,7 +4,7 @@ import MemberAverageVisualBar from './MemberAverageVisualBar'
 
 const GroupAnalysis = (props) => {
 
-  const [viewChoice, setViewChoice] = useState('Books Rated By Every Member')
+  const [viewChoice, setViewChoice] = useState('Books Rated By More Than One Member')
 
   const uniqueMembers = props.uniqueValues(props.data, 'memberid')
   const numMembers = uniqueMembers.length
@@ -68,20 +68,39 @@ const GroupAnalysis = (props) => {
   const unselectedClassName = 'border border-gray-500 bg-blue-100 py-10 px-4 cursor-pointer rounded-xl w-full'
   const selectedClassName = 'border border-gray-500 border-[5px] bg-blue-200 py-10 px-4 cursor-pointer rounded-xl w-full'
   const awardTitleClass = ' text-lg lg:text-xl font-bold mt-1 mb-2'
+
+  const classNameWithFullOverlap = 'grid grid-cols-1 sm:grid-cols-3 gap-4 mx-2 sm:mx-10 my-10'
+  const classNameWithPartialOverlap = 'grid grid-cols-1 sm:grid-cols-2 gap-4 mx-2 sm:mx-10 my-10'
+  const classNameWithNoOverlap = 'grid grid-cols-1 gap-4 mx-2 sm:mx-10 my-10'
+  
+  let classToUse = classNameWithNoOverlap
+
+  if (booksRatedByAllMembers.length > 0)
+  {
+    classToUse = classNameWithFullOverlap
+  } else if (booksRatedByMoreThanOneMember.length > 0) {
+    classToUse = classNameWithPartialOverlap
+  } else {
+    classToUse = classNameWithNoOverlap
+  }
+
+
   return (
     <div>
-      <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 mx-2 sm:mx-10 my-10'>
-        <div onClick={() => setViewChoice('Books Rated By Every Member')} className={viewChoice == 'Books Rated By Every Member' ? selectedClassName : unselectedClassName}>
+      <div className={classToUse}>
+        {booksRatedByAllMembers.length > 0 &&
+        (<div onClick={() => setViewChoice('Books Rated By Every Member')} className={viewChoice == 'Books Rated By Every Member' ? selectedClassName : unselectedClassName}>
           <p className='text-4xl md:text-[50px] font-bold text-center'>{booksRatedByAllMembers.length}</p>
-          <p className='text-center text-sm'>Books Rated By Every Member </p>
-        </div>
-        <div onClick={() => setViewChoice('Books Rated By More Than One Member')} className={viewChoice == 'Books Rated By More Than One Member' ? selectedClassName : unselectedClassName}>
+          <p className='text-center text-sm pt-3'>Books Rated By Every Member </p>
+        </div>)}
+        {booksRatedByMoreThanOneMember.length > 0 &&
+        (<div onClick={() => setViewChoice('Books Rated By More Than One Member')} className={viewChoice == 'Books Rated By More Than One Member' ? selectedClassName : unselectedClassName}>
           <p className='text-4xl md:text-[50px] font-bold text-center' >{booksRatedByMoreThanOneMember.length}</p>
-          <p className='text-center text-sm'>Books Rated By More Than One Member </p>
-        </div>
+          <p className='text-center text-sm pt-3'>Books Rated By More Than One Member </p>
+        </div>)}
         <div onClick={() => setViewChoice('Books Rated By Anyone')} className={viewChoice == 'Books Rated By Anyone' ? selectedClassName : unselectedClassName}>
           <p className='text-4xl md:text-[50px] font-bold text-center'>{props.uniqueValues(props.data, 'bookid').length}</p>
-          <p className='text-center text-sm'>Books Rated By Anyone </p>
+          <p className='text-center text-sm pt-3'>Books Rated By Anyone </p>
         </div>
       </div>
 

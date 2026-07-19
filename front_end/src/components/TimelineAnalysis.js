@@ -71,10 +71,10 @@ const TimelineAnalysis = (props) => {
           <ResponsiveContainer width="100%" height = "90%">
             <ScatterChart margin={{ top: 20, right: 10, bottom: 40, left: 10 }}>
             <CartesianGrid />
-            <XAxis tickFormatter={(value) => Math.round(value)} label = {{value: 'Year Published', position :'insideBottom', offset: -25}} type = 'number' scale = 'linear' domain={['dataMin-1', 'dataMin+1']}  tickCount={Math.min(numYears, 20)} dataKey="Year" name="Year Published" />
+            <XAxis tickFormatter={(value) => Math.round(value)} label = {{value: 'Year Published', position :'insideBottom', offset: -25}} type = 'number' scale = 'linear' domain={['dataMin-1', 'dataMin+1']}  tickCount={Math.min(numYears, 20)} dataKey="PlotYear" name="Year Published" />
             <YAxis dataKey="Rating" name="Rating" domain={[1, 10]} tickCount = {10}/>
             <Tooltip content={<CustomTooltip/>}  isAnimationActive = {false} position = {typeof window !== 'undefined' && window.innerWidth < 768 ? { x: 0, y: 0 } : undefined}/>
-            <Scatter name="Books" data= {props.sort_table(plotData, 'Year', true)} fill="#ef4444" />
+            <Scatter name="Books" data={props.sort_table(plotData, 'Year', true).map((row, index) => ({...row, PlotYear: Number(row.Year) + ((index % 5) - 2) * 0.08 }))} fill="#ef4444" />
             </ScatterChart>
           </ResponsiveContainer>
         </div>
