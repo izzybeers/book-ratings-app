@@ -40,7 +40,7 @@ const membersSlice = createSlice({
             state.selectedMemberID = action.payload
         },
         addMember: (state, action) => {
-            const index = state.data.findIndex(row => row.memberid === action.payload.memberid);
+            const index = state.data.findIndex(row => row.MemberID === action.payload.MemberID);
             if(index != -1)
             {
                 state.data[index] = (action.payload)
