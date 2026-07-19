@@ -31,12 +31,17 @@ const BookScroller = (props) => {
           } else if (width >= 640) {
               setItemsPerPage(20) //sm screen
               setCols(5)
-          } else { // mobile screen: 2 columns * 3 rows
-              setItemsPerPage(16);  
-              setCols(4)
+          } else if (width >= 400) {
+            setItemsPerPage(16);
+            setCols(4)
+          } else { 
+              setItemsPerPage(6);
+              setCols(2);
           }
         }
         setCurrentIndex(0)
+
+        handleResize()
 
         window.addEventListener('resize', handleResize)
 
@@ -68,7 +73,7 @@ const BookScroller = (props) => {
             currentPageBooks.map((book) =>  {
               return (
               <div>
-                <div className='px-5 py-2 w-32 w-40 lg:w-44'>
+                <div className='px-2 py-2 w-full lg:w-44'>
                   <div className='flex h-40 lg:h-56'>
                       <img className='items-start justify-center' src={book.Thumbnail} alt={`${book.Author} - ${book.Book}`} title={`${book.Author} - ${book.Book} (${book.Year})`}></img>
                   </div>
