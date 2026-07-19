@@ -136,7 +136,7 @@ const FriendComparisons = () => {
       :
     (<div>
         <Nav/>
-        <div className = {`grid ${numMembers > 2 ? 'grid-cols-3' : 'grid-cols-2'} mt-10`}>
+        <div className = {`grid ${numMembers > 2 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-2'} mt-10`}>
           <label className ={`${labelsClass} ${selectedAnalysisType == 'personal' && 'border-[3px]'}`}>
             <input
               type="radio"

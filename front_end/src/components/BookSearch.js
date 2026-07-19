@@ -63,7 +63,7 @@ const BookSearch = (props) => {
     console.log(bookSearchResult)
   return (
     <div className = 'flex justify-center'>
-        <div className = 'relative flex flex-col border border-gray-800 border-2 h-[70vh] w-[95vw] bg-gray-100 overflow-hidden'>
+        <div className = 'relative flex flex-col border-2 border-gray-800 min-h-[70vh] h-auto lg:h-[70vh] w-[95vw] bg-gray-100 overflow-visible lg:overflow-hidden'>
             <div className= 'flex flex-wrap justify-between'>
                 <div className = 'mt-4 mx-2 sm:mx-4 flex flex-wrap'>
                     <input className = 'border justify-start border-gray-600 w-full sm:w-60 my-2 mr-2 p-1 h-8' type = 'text' placeholder = 'Search for a book...'
@@ -72,11 +72,11 @@ const BookSearch = (props) => {
                     <button className = 'border justify-start border-gray-600 my-2 mx-2 p-1  h-8 active:bg-gray-300' onClick = {() => handleSearch(queryText)}>Search</button>
                     <button className = 'border justify-start border-gray-600 my-2 mx-2 p-1 h-8 active:bg-gray-200' onClick = {() => setBookSearchResult([])}>Reset</button>
                  </div>
-                <p className = 'inline-block items-end justify-end mr-4 mt-2  w-7 h-7 text-center border border-gray-800 border-2 cursor-pointer'
+                <p className = 'absolute top-2 right-2 w-7 h-7 text-center border-2 border-gray-800 cursor-pointer'
                 onClick = {() => {props.setSearchMode(false)}}>x</p>
             </div>
             {showSearchResults &&
-                (<div className = 'relative flex-1 min-h-0 mx-2 sm:ml-4 overflow-y-auto overflow-x-hidden'>
+                (<div className = 'relative flex-1 min-h-0 mx-2 sm:ml-4 overflow-visible lg:overflow-y-auto lg:overflow-x-hidden'>
                     {bookSearchResult.map((result, index) => {
                         const itemClicked = index == clickedItem && itemIsClicked ? true : false
                         const selectedStyle = itemClicked ? 'border-[3px] bg-gray-300' : ''
