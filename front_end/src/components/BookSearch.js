@@ -81,7 +81,7 @@ const BookSearch = (props) => {
                         const itemClicked = index == clickedItem && itemIsClicked ? true : false
                         const selectedStyle = itemClicked ? 'border-[3px] bg-gray-300' : ''
                         return ( 
-                        <div className = 'grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-2'>
+                        <div className = 'grid grid-cols-1 xl:grid-cols-[3fr_2fr] gap-2'>
                             <div onClick = {() => chooseBookFromResults(index)}
                             className = {`py-2 inline-block bg-white self-start text-center cursor-pointer border border-gray-800 text-center overflow-y-auto my-2 ${selectedStyle}`}>
                                 <img  className = 'mx-auto' src = {result.thumbnail} alt= 'no cover found'/>
