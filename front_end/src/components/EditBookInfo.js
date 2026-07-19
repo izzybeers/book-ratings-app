@@ -64,25 +64,25 @@ const EditBookInfo = (props) => {
         <div className='flex flex-col mx-10 bg-green-100 justify-center'>
             <p className='font-semibold p-2'>{props.fillOutDataMessage}</p>
             <div className='flex flex-wrap justify-center'>
-                <div className='flex flex-col m-2'>
+                <div className='flex flex-col m-2 w-full sm:w-auto'>
                     <label className='font-bold h-7 m-1'> Author <span className='text-red-500 text-2xl'>*</span></label>
                     <input className='border border-gray-600 text-center' type='text' value={author} onChange={(e) => setAuthor(e.target.value)}></input>
                 </div>
-                <div className='flex flex-col m-2'>
+                <div className='flex flex-col m-2 w-full sm:w-auto'>
                     <label className='font-bold h-7 m-1'> Title <span className='text-red-500 text-2xl'>*</span></label>
                     <input className='border border-gray-600 text-center' type='text' value={title} onChange={(e) => setTitle(e.target.value)}></input>
                 </div>
-                <div className='flex flex-col m-2'>
+                <div className='flex flex-col m-2 w-full sm:w-auto'>
                     <label className='font-bold m-1 h-7'>Year Published</label>
                     <input className='border border-gray-600 text-center' type='text' value={yearPublished} onChange={(e) => setYearPublished(e.target.value)}></input>
                 </div>
-                <div className='flex flex-col m-2'>
+                <div className='flex flex-col m-2 w-full sm:w-auto'>
                     <label className='font-bold h-7 m-1'>Approx. Word Count</label>
                     <input className='border border-gray-600 text-center' type='text' value={wordCount} onChange={(e) => setWordCount(e.target.value)}></input>
                 </div>
             </div>
-            <div className='flex justify-center'>
-                <div className='flex flex-col m-2'>
+            <div className='flex flex-col sm:flex-row justify-center'>
+                <div className='flex flex-col m-2 w-full sm:w-auto'>
                     <label className='font-bold m-1 h-7'>Select best age range<span className='text-red-500 text-2xl'>*</span></label>
                     <select className='border border-gray-600' value={ageGroup} onChange={(e) => setAgeGroup(e.target.value)}>
                         {ageOptions.map((opt) => {
@@ -90,7 +90,7 @@ const EditBookInfo = (props) => {
                         })}
                     </select>
                 </div>
-                <div className='flex flex-col m-2'>
+                <div className='flex flex-col m-2 w-full sm:w-auto'>
                     <label className='font-bold m-1 h-7'>Who selected this for book club?<span className='text-red-500 text-2xl'>*</span></label>
                     <select className='border border-gray-600' value={bookSelector} onChange={(e) => setBookSelector(e.target.value)}>
                         <option value={null}>Not part of book club</option>
@@ -99,7 +99,7 @@ const EditBookInfo = (props) => {
                     </select>
                 </div>
             </div>
-            <div className='flex flex-col m-2 mx-auto'>
+            <div className='flex flex-col m-2 mx-auto w-full sm:w-auto'>
                 <label className='font-bold m-1 h-7'>Select Primary Genre<span className='text-red-500 text-2xl'>*</span></label>
                 <select className='border border-gray-600' value={primaryGenre} onChange={(e) => { setPrimaryGenre(e.target.value); setSecondaryGenres([]) }}>
                     {genreOptions.map((opt) => {
@@ -109,7 +109,7 @@ const EditBookInfo = (props) => {
                 </select>
             </div>
             <div className='flex flex-col m-2 items-center mx-auto'>
-                <label className='font-bold m-1'>Select up to 2 secondary genres (optional)</label>
+                <label className='font-bold m-1 text-center'>Select up to 2 secondary genres (optional)</label>
                 <div className='flex flex-wrap gap-1 mx-auto px-2 sm:px-10 lg:px-[200px] max-w-[2500px] justify-center'>
                     {genreOptions.map((opt) => {
                         return opt != primaryGenre &&
