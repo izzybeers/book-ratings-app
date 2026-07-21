@@ -26,13 +26,17 @@ const FriendComparisons = () => {
   const numMembers = uniqueValues(fullData, 'memberid').length
   const selectedMemberName = uniqueValues(selectedUserData, 'Member')[0]
   const otherMemberNames = useMemo(() => {return uniqueValues(fullData.filter((row) => row.memberid != selectedUser), 'Member')}, [selectedUser, fullData])
-
+  console.log('otherMemberNames')
+  console.log(otherMemberNames)
+  console.log(otherMemberNames[0])
   const [headToHead, setHeadToHead] = useState(otherMemberNames[0])
+  
 
+  console.log(headToHead)
   console.log(numMembers)
 
   useEffect(() => {
-    if (headToHead == selectedMemberName)
+    if (!headToHead || headToHead == selectedMemberName)
     {
       setHeadToHead(otherMemberNames[0])
     }
