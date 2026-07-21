@@ -110,7 +110,7 @@ const HeadToHead = (props) => {
   console.log('selector wide df')
   console.log(selectorWideDf)
   let raterColorMap = []
-  if (selectorWideDf.length > 0)
+  if (selectorWideDf.length == 4)
   {
     raterColorMap = {
         [props.uniqueValues(selectorWideDf, 'value')[0]]: 'bg-blue-400',
@@ -139,7 +139,7 @@ const HeadToHead = (props) => {
             <p className = 'font-bold text-md 2xl:text-xl'>Our Favorite Author <br></br> <span className = 'font-bold text-sm 2xl:text-lg'>{avg_by_author[0].value}</span></p>
             <p className = 'font-bold text-sm 2xl:text-md'><span className = 'text-red-500 text-sm 2xl:text-md font-bold'>{avg_by_author[0].count/2} </span> Books Rated</p>
           </div>)}
-          {selectorWideDf.length < 0 &&
+          {selectorWideDf.length == 4 &&
           (<div className = 'flex flex-col'>
             <p className='text-[40px] font-bold mt-10'>Who picks the best books?</p>
             <div className='flex items-center justify-center h-80 px-4 w-full gap-8'>
