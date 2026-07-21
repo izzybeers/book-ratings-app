@@ -34,11 +34,6 @@ const PersonalRatingsDisplayProfiles = (props) => {
                     <p className = 'text-xs'>Most Frequent Author In Group</p>
                     </div>)
         })}
-        {/* {favorites.length > 0 &&
-        favoritesBySelector.map((row) => {
-            return (<p>{row.value == 'Not part of book club' ? row.value :
-                row.value == 'Mutual' ? 'Mutual Selection' : `Selected By ${row.value}`} {100*(row.count/favorites.length).toFixed(2)}%</p>)
-        })} */}
         <p className = 'text-center my-3 text-lg font-bold'>Average: {Math.round(mean(props.groupData.filter((row) => row.WordCount != null).map((row) => row.WordCount))).toLocaleString()} Words</p>
     </div>
   )
