@@ -53,16 +53,21 @@ const GroupAnalysis = (props) => {
   const leastConsistentRater = props.sort_table(avg_by_member, 'sdRating', false)[0]
 
   const mostBooksRated = props.sort_table(avg_by_member, 'count', false)[0]
-
-  const bestSelector = props.sort_table(props.groupBy(ratingsTable.filter((row) => !['Mutual', 'Not part of book club'].includes(row.BookSelector)), 'BookSelector', 2), 'avgRating', false)[0]
+  console.log('book selectors')
+  console.log(props.uniqueValues(ratingsTable, 'BookSelector'))
+  const bestSelector = props.sort_table(props.groupBy(ratingsTable.filter((row) => !['Mutual', 'Not part of book club'].includes(row.BookSelector) & row['BookSelector'] != null), 'BookSelector', 2), 'avgRating', false)[0]
 
   const avg_by_genre = props.avgByGenre(ratingsTable, 3, true)
+  console.log(avg_by_genre)
   const avgByGenreAbove5 = avg_by_genre.filter((row) => row.numBooks >= 5)
-  let topReadGenres = null
-  if (avgByGenreAbove5.length >= 5) {
-    topReadGenres = props.sort_table(avgByGenreAbove5, 'avgRating', false).slice(0, 5)
-  } else if (avg_by_genre.length >= 5) {
-    topReadGenres = props.sort_table(avg_by_genre, 'avgRating', false).slice(0, 5)
+  let topReadGenres = []
+  if (avg_by_genre.length > 0)
+  {
+    if (avgByGenreAbove5.length >= 5) {
+      topReadGenres = props.sort_table(avgByGenreAbove5, 'avgRating', false).slice(0, 5)
+    } else if (avg_by_genre.length >= 5) {
+      topReadGenres = props.sort_table(avg_by_genre, 'avgRating', false).slice(0, 5)
+    }
   }
 
   const unselectedClassName = 'border border-gray-500 bg-blue-100 py-10 px-4 cursor-pointer rounded-xl w-full'
@@ -228,7 +233,7 @@ const GroupAnalysis = (props) => {
           <div className='flex flex-col text-center items-center justify-center bg-gray-200 mx-auto w-full max-w-[300px] h-[200px]  border-2 border-gray-500 rounded-xl'>
               <p className={awardTitleClass}>Chooses the best books</p>
               <p className='text-sm'>{bestSelector.value}</p>
-              <p className='text-sm'>{bestSelector.avgRating.toFixed(2)}</p>
+              <p className='text-sm'>Average Rating: {bestSelector.avgRating.toFixed(2)}</p>
             </div>
       </div>)}
 
